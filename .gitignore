@@ -1,0 +1,60 @@
+# Xcode
+#
+build/
+DerivedData/
+*.xcworkspace
+!default.xcworkspace/contents.xcworkspacedata
+xcuserdata/
+*.moved-aside
+*.xcuserstate
+*.xcscmblueprint
+
+# Swift Package Manager
+#
+.build/
+.swiftpm/xcode/
+Package.resolved
+Package.pins
+Sources/**/Info.plist
+
+# Carthage
+#
+Carthage/Build/
+Carthage/Checkouts/
+Carthage/Packages.resolved
+
+# CocoaPods
+#
+Pods/
+Podfile.lock
+Podfile.swn
+Podfile.swp
+Podfile.swo
+.profile
+
+# fastlane
+#
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Other
+#
+*.orig
+*.DS_Store
+*.env
+*.local
+*.xcconfig
+
+# Documentation
+#
+.docc-build/
+
+# Temporary files
+#
+*.swp
+*.swo
+*.swm
+*.dat
+*.tmp
