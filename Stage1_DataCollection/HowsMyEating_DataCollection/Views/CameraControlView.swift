@@ -14,11 +14,12 @@ struct CameraView: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) { }
 }
-
 struct CameraControlView: View {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var cameraManager = CameraManager()
     @StateObject private var motionManager = MotionManager()
+    
+    @State private var isRecording: Bool = false
     
     var body: some View {
         ZStack {
@@ -30,7 +31,7 @@ struct CameraControlView: View {
                 HStack {
                     Spacer()
                     Button(action: {
-                        if cameraManager.isRecording {
+                        if isRecording {
                             Task {
                                 await stopRecording()
                             }
@@ -38,10 +39,10 @@ struct CameraControlView: View {
                             startRecording()
                         }
                     }) {
-                        Text(cameraManager.isRecording ? "Stop Recording" : "Start Recording")
+                        Text(isRecording ? "Stop Recording" : "Start Recording")
                             .foregroundColor(.white)
                             .padding()
-                            .background(cameraManager.isRecording ? Color.red : Color.green)
+                            .background(isRecording ? Color.red : Color.green)
                             .cornerRadius(10)
                     }
                     Spacer()
@@ -54,6 +55,7 @@ struct CameraControlView: View {
     private func startRecording() {
         cameraManager.startRecording()
         motionManager.startRecording()
+        isRecording = true
     }
     
     private func stopRecording() async {
@@ -68,5 +70,6 @@ struct CameraControlView: View {
         } catch {
             print("Error stopping recording: \(error.localizedDescription)")
         }
+        isRecording = false
     }
 }

@@ -16,39 +16,30 @@ struct ContentView: View {
         NavigationView {
             VStack {
                 NavigationLink(destination: CameraControlView()) {
-                    Text("Record Data")
+                    Text("Record New Data")
                         .padding()
                         .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(8)
                 }
                 .padding()
-
                 if recordedDataList.isEmpty {
                     Text("No recorded data")
                         .padding()
                 } else {
-                    
                     List {
                         ForEach(recordedDataList) { recordedData in
                             NavigationLink(destination: DetailedRecordingView(recordedData: recordedData)) {
-                                Text("Data: \(recordedData.motionArray.count)")
-                                    .padding()
-                                    .background(Color.green)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(8)
+                                Text("Data: \(recordedData.timestamp)")
                             }
                             .padding()
                         }
-                            
+                        .onDelete(perform: deleteItems)
                     }
-                    
-                    
-                    
-
                 }
             }
-            .navigationTitle("Measured Munch Collector")
+            .navigationTitle("How's My Eating? Data Collection")
+            .padding()
             
         }
     }

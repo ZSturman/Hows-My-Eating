@@ -15,7 +15,6 @@ final class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerD
     private var motionQueue = OperationQueue()
     private var motionTimer: Timer?
     
-    @Published var currentMotionData: MotionData
     
     @Published var connectionStatus: Bool = false
     @Published var motionDataAvailable: Bool = false
@@ -25,11 +24,9 @@ final class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerD
     
     
     override init() {
-        self.currentMotionData = defaultMotionData
         super.init()
         manager.delegate = self
         checkMotionDataAvailability()
-        self.currentMotionData = verifyInitialUpdates()
 
     }
     
@@ -44,15 +41,13 @@ final class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerD
         manager.startDeviceMotionUpdates()
     }
     
-    func verifyInitialUpdates() -> MotionData {
+    func verifyInitialUpdates() {
         if manager.isDeviceMotionAvailable {
             print("Device motion is available. Starting device motion updates for verification.")
             manager.startDeviceMotionUpdates()
-            return collectInitialMotionData()
         } else {
             print("Device motion is not available.")
             connectionStatus = false
-            return defaultMotionData
         }
     }
     
@@ -69,11 +64,6 @@ final class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerD
             
             motionTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 200.0, repeats: true) { _ in
                 self.collectMotionData()
-                
-                // Check if initial motion data values are zero
-                if self.currentMotionData.attitude.roll == 0 && self.currentMotionData.attitude.pitch == 0 && self.currentMotionData.attitude.yaw == 0 {
-                    self.restartMotionUpdates()
-                }
             }
             
         } else {
@@ -84,34 +74,6 @@ final class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerD
     
 
     
-    private func collectInitialMotionData() -> MotionData {
-        print("Collecting")
-        restartMotionUpdates()
-        if let motion = manager.deviceMotion {
-            let attitude = Attitude(roll: motion.attitude.roll, pitch: motion.attitude.pitch, yaw: motion.attitude.yaw)
-            let rotationRate = RotationRate(x: motion.rotationRate.x, y: motion.rotationRate.y, z: motion.rotationRate.z)
-            let userAcceleration = UserAcceleration(x: motion.userAcceleration.x, y: motion.userAcceleration.y, z: motion.userAcceleration.z)
-            let gravity = Gravity(x: motion.gravity.x, y: motion.gravity.y, z: motion.gravity.z)
-            
-            let relativeTimestamp = Date().timeIntervalSince1970 - (self.recordingStartTime ?? 0)
-            
-            let motionElement = MotionData(
-                timestamp: relativeTimestamp,
-                attitude: attitude,
-                rotationRate: rotationRate,
-                userAcceleration: userAcceleration,
-                gravity: gravity
-               
-            )
-            
-            DispatchQueue.main.async {
-                self.currentMotionData = motionElement
-                self.manager.stopDeviceMotionUpdates()
-            }
-            return motionElement
-        }
-        return defaultMotionData
-    }
     
     
     private func collectMotionData() {
@@ -133,27 +95,19 @@ final class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerD
             
             DispatchQueue.main.async {
                 self.motionDataArray.append(motionElement)
-                self.currentMotionData = motionElement
             }
         }
     }
     
 
-
-
-    
-    func stopRecording() async throws ->  [MotionData]  {
+    func stopRecording() async throws -> [MotionData] {
         motionTimer?.invalidate()
         motionTimer = nil
+        manager.stopDeviceMotionUpdates()
         return motionDataArray
     }
 
 
-
-    func stopUpdates() {
-        manager.stopDeviceMotionUpdates()
-        motionTimer?.invalidate()
-    }
     
     func reset() {
         recordingStartTime = nil
