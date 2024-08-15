@@ -12,7 +12,6 @@ import AVFoundation
 class CameraManager: NSObject, ObservableObject, AVCaptureFileOutputRecordingDelegate {
     
     let output = AVCaptureMovieFileOutput()
-    // An internal alias for the output.
     private var movieOutput: AVCaptureMovieFileOutput { output }
     private var delegate: MovieCaptureDelegate?
     
@@ -20,6 +19,7 @@ class CameraManager: NSObject, ObservableObject, AVCaptureFileOutputRecordingDel
     private var previewLayer: AVCaptureVideoPreviewLayer?
     
     @Published var videoURL: URL?
+    var recordingStartTime: Date?
 
     // MARK: - Setup Camera
     func setupCamera() {
@@ -81,7 +81,8 @@ class CameraManager: NSObject, ObservableObject, AVCaptureFileOutputRecordingDel
     }
     
     // MARK: - Start Recording
-    func startRecording() {
+    func startRecording(startTime: Date?) {
+        self.recordingStartTime = startTime
         print("Camera Manager: Start Recording")
         // Return early if already recording.
         guard !movieOutput.isRecording else { return }

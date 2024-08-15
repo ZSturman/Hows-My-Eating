@@ -15,7 +15,9 @@ struct DetailedRecordingView: View {
     var recordedData: CapturedMotionAndMovieData
     
     @State private var isShowingVideoPlayer: Bool = false
-    
+    @State private var showAlert: Bool = false
+    @State private var alertMessage: String = ""
+
     var body: some View {
         VStack {
             Text("Motion Data Details")
@@ -30,12 +32,20 @@ struct DetailedRecordingView: View {
             Text("Recorded Movie Path:")
                 .font(.subheadline)
                 .padding(.top)
-            Text("\(recordedData.moviePath.lastPathComponent)")
+            Text("\(recordedData.moviePath)")
                 .padding(.bottom)
+            
+            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let fullMoviePath = documentsDirectory.appendingPathComponent(recordedData.moviePath)
             
             // Button to play the video
             Button(action: {
-                isShowingVideoPlayer.toggle()
+                if FileManager.default.fileExists(atPath: fullMoviePath.path) {
+                    isShowingVideoPlayer.toggle()
+                } else {
+                    alertMessage = "Movie file not found at path: \(fullMoviePath.path)"
+                    showAlert = true
+                }
             }) {
                 Text("Play Video")
                     .foregroundColor(.white)
@@ -45,14 +55,11 @@ struct DetailedRecordingView: View {
             }
             .padding()
             .fullScreenCover(isPresented: $isShowingVideoPlayer) {
-                VideoPlayerView(videoURL: recordedData.moviePath)
+                VideoPlayerView(videoURL: fullMoviePath)
             }
-            
-            // Toggle to show/hide detailed motion data
-            Text("Motion data count: \(recordedData.motionArray.count)")
-                    .foregroundColor(.blue)
-                    .padding()
-            
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            }
             
             Spacer()
         }

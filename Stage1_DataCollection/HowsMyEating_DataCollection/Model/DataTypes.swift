@@ -47,9 +47,9 @@ struct Movie: Sendable {
 final class CapturedMotionAndMovieData {
     var timestamp: Date
     var motionArray: [MotionData]
-    var moviePath: URL
+    var moviePath: String
     
-    init(timestamp: Date, motionArray: [MotionData], moviePath: URL) {
+    init(timestamp: Date, motionArray: [MotionData], moviePath: String) {
         self.timestamp = timestamp
         self.motionArray = motionArray
         self.moviePath = moviePath
