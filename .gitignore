@@ -58,3 +58,13 @@ fastlane/test_output
 *.swm
 *.dat
 *.tmp
+
+# Python
+#
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.sesskey
+

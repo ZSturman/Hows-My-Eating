@@ -80,8 +80,9 @@ class CameraManager: NSObject, ObservableObject, AVCaptureFileOutputRecordingDel
         }
     }
     
+    
     // MARK: - Start Recording
-    func startRecording(startTime: Date?) {
+    func startRecording(to fileURL: URL? = nil, startTime: Date?) {
         self.recordingStartTime = startTime
         print("Camera Manager: Start Recording")
         // Return early if already recording.
@@ -92,8 +93,8 @@ class CameraManager: NSObject, ObservableObject, AVCaptureFileOutputRecordingDel
         }
 
         // Configure connection for HEVC capture.
-        if movieOutput.availableVideoCodecTypes.contains(.hevc) {
-            movieOutput.setOutputSettings([AVVideoCodecKey: AVVideoCodecType.hevc], for: connection)
+        if movieOutput.availableVideoCodecTypes.contains(.h264) {
+            movieOutput.setOutputSettings([AVVideoCodecKey: AVVideoCodecType.h264], for: connection)
         }
 
         // Enable video stabilization if the connection supports it.
@@ -102,9 +103,12 @@ class CameraManager: NSObject, ObservableObject, AVCaptureFileOutputRecordingDel
         }
         
         delegate = MovieCaptureDelegate()
-        movieOutput.startRecording(to: URL.applicationSupportDirectory.appendingPathComponent("\(Date().timeIntervalSince1970).mov"), recordingDelegate: delegate!)
+        
+        // Determine the output URL. If none is provided, save to the default location.
+        let outputURL = fileURL ?? URL.applicationSupportDirectory.appendingPathComponent("\(Date().timeIntervalSince1970).mov")
+        
+        movieOutput.startRecording(to: outputURL, recordingDelegate: delegate!)
     }
-    
     
     func stopRecording() async throws -> Movie {
         guard movieOutput.isRecording else {

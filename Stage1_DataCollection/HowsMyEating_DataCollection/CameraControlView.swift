@@ -15,17 +15,14 @@ struct CameraView: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) { }
 }
 
-import SwiftUI
-import AVFoundation
-import SwiftData
 
 struct CameraControlView: View {
-    @Environment(\.modelContext) private var modelContext
     @StateObject private var cameraManager = CameraManager()
     @StateObject private var motionManager = MotionManager()
 
     @State private var isRecording: Bool = false
     @State private var recordingStartTime: Date? = nil
+    @State private var currentRecordingFolderURL: URL?
 
     var body: some View {
         ZStack {
@@ -67,36 +64,47 @@ struct CameraControlView: View {
     private func startRecording() {
         print("Starting recording...")
         recordingStartTime = Date()
+        
+        // Create the folder for this recording session
+        let timestampString = formatTimestamp(recordingStartTime!)
+        let folderURL = URL.applicationSupportDirectory.appendingPathComponent(timestampString)
+        currentRecordingFolderURL = folderURL
+
+        do {
+            try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true, attributes: nil)
+        } catch {
+            print("Error creating recording folder: \(error)")
+            return
+        }
+
+        // Start recording
         motionManager.startRecording(startTime: recordingStartTime)
-        cameraManager.startRecording(startTime: recordingStartTime)
+        cameraManager.startRecording(to: folderURL.appendingPathComponent("\(timestampString).mov"), startTime: recordingStartTime)
         isRecording = true
     }
 
     private func stopRecording() async {
         do {
             let movie = try await cameraManager.stopRecording()
-            print("Movie: \(movie)")
+            print("Saved movie to \(movie)")
             let motionDataArray = try await motionManager.stopRecording()
-            print("Motion Data: \(motionDataArray)")
 
-            // Initialize MediaLibrary actor
-            let mediaLibrary = MediaLibrary()
-
-            // Save the movie to the app's data directory
-            let movieURL = try await mediaLibrary.save(movie: movie)
-            let relativeMoviePath = movieURL.lastPathComponent // Save only the relative path
-            print("Movie relative path: \(relativeMoviePath)")
-
-            withAnimation {
-                // Create a new instance of CapturedMotionAndMovieData with the relative movie path
-                let newItem = CapturedMotionAndMovieData(timestamp: recordingStartTime!, motionArray: motionDataArray, moviePath: relativeMoviePath)
-                modelContext.insert(newItem)
-                print("Saved data: \(newItem)")
+            // Save motion data as JSON
+            if let folderURL = currentRecordingFolderURL {
+                let jsonFileURL = folderURL.appendingPathComponent("\(formatTimestamp(recordingStartTime!)).json")
+                let motionData = try JSONEncoder().encode(motionDataArray)
+                try motionData.write(to: jsonFileURL)
             }
 
         } catch {
             print("Error stopping recording: \(error.localizedDescription)")
         }
         isRecording = false
+    }
+    
+    private func formatTimestamp(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd-HHmmss"
+        return formatter.string(from: date)
     }
 }

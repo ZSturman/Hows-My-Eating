@@ -1,13 +1,14 @@
 import SwiftUI
-import SwiftData
+import UIKit
 import UniformTypeIdentifiers
+import Foundation
+
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query var recordedDataList: [CapturedMotionAndMovieData]
-    
-    @State private var isShowingExportSheet = false
-    @State private var exportURL: URL?
+    @State var contentFolder = URL.applicationSupportDirectory
+    @State var recordingFolders: [URL] = []
+    @State var selectedFolder: URL?
+    @State private var showActivityView = false
 
     var body: some View {
         NavigationView {
@@ -20,125 +21,126 @@ struct ContentView: View {
                         .cornerRadius(8)
                 }
                 .padding()
-                
-                if recordedDataList.isEmpty {
+
+                if recordingFolders.isEmpty {
                     Text("No recorded data")
                         .padding()
                 } else {
                     List {
-                        ForEach(recordedDataList) { recordedData in
-                            NavigationLink(destination: DetailedRecordingView(recordedData: recordedData)) {
-                                Text("Data: \(recordedData.timestamp)")
+                        ForEach(recordingFolders, id: \.self) { folder in
+                            HStack {
+                                Text(folder.lastPathComponent)
+                                Spacer()
+                                if selectedFolder == folder {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(.blue)
+                                }
                             }
-                            .padding()
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                toggleSelection(for: folder)
+                            }
                         }
                         .onDelete(perform: deleteItems)
                     }
-                    
-                    // Export Button
-                    Button(action: exportData) {
-                        Text("Export All Data")
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.green)
-                            .cornerRadius(8)
-                    }
-                    .padding()
-                    .sheet(isPresented: $isShowingExportSheet, content: {
-                        if let exportURL = exportURL {
-                            ActivityView(activityItems: [exportURL])
-                        }
-                    })
                 }
             }
             .navigationTitle("How's My Eating? Data Collection")
             .padding()
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showActivityView = true
+                    }) {
+                        Text("Share")
+                    }
+                    .disabled(selectedFolder == nil)
+                }
+            }
+            .sheet(isPresented: $showActivityView) {
+                if let folder = selectedFolder {
+                    ActivityViewController(folderURL: folder) {
+                        showDeleteConfirmation(for: folder)
+                    }
+                }
+            }
+            .onAppear {
+                loadFolders()
+            }
+        }
+    }
+
+    private func loadFolders() {
+        do {
+            let folderURLs = try FileManager.default.contentsOfDirectory(at: contentFolder, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
+            recordingFolders = folderURLs.filter { $0.hasDirectoryPath }
+        } catch {
+            print("Error loading recording folders: \(error)")
+        }
+    }
+    
+
+    private func toggleSelection(for folder: URL) {
+        if selectedFolder == folder {
+            selectedFolder = nil
+        } else {
+            selectedFolder = folder
         }
     }
 
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
-                modelContext.delete(recordedDataList[index])
-            }
-        }
-    }
-    
-    private func exportData() {
-        let fileManager = FileManager.default
-        let tempDirectory = fileManager.temporaryDirectory
-        let exportDirectory = tempDirectory.appendingPathComponent("ExportedData")
-        let uniqueZipFilename = "ExportedData-\(UUID().uuidString).zip"
-        let zipFilePath = tempDirectory.appendingPathComponent(uniqueZipFilename)
-        
-        do {
-            // Create directory for export
-            try fileManager.createDirectory(at: exportDirectory, withIntermediateDirectories: true, attributes: nil)
-            
-            for recordedData in recordedDataList {
-                let dataFilePath = exportDirectory.appendingPathComponent("\(recordedData.timestamp).json")
-                let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-                let movieFilePath = documentsDirectory.appendingPathComponent(recordedData.moviePath)
-                
-                // Save motion data as JSON
-                let motionData = try JSONEncoder().encode(recordedData.motionArray)
-                try motionData.write(to: dataFilePath)
-                
-                // Verify that the movie file exists before copying
-                if fileManager.fileExists(atPath: movieFilePath.path) {
-                    print("Found \(movieFilePath)")
-                    try fileManager.copyItem(at: movieFilePath, to: exportDirectory.appendingPathComponent(recordedData.moviePath))
-                } else {
-                    print("Movie file not found at path: \(movieFilePath.path)")
+                let folder = recordingFolders[index]
+                do {
+                    try FileManager.default.removeItem(at: folder)
+                    recordingFolders.remove(at: index)
+                } catch {
+                    print("Error deleting folder: \(error)")
                 }
-                
             }
-            
-            // Create ZIP archive
-            try fileManager.zipItem(at: exportDirectory, to: zipFilePath)
-            
-            // Set export URL for sharing
-            exportURL = zipFilePath
-            isShowingExportSheet = true
-            
-            // Cleanup
-            try fileManager.removeItem(at: exportDirectory)
-        } catch {
-            print("Error exporting data: \(error.localizedDescription)")
         }
     }
-}
-
-// ActivityView for sharing
-struct ActivityView: UIViewControllerRepresentable {
-    var activityItems: [Any]
     
-    func makeUIViewController(context: Context) -> UIActivityViewController {
-        return UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-    }
-    
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
-}
-
-extension FileManager {
-    func zipItem(at sourceURL: URL, to destinationURL: URL) throws {
-        let coordinator = NSFileCoordinator()
-        var zipError: Error?
-        coordinator.coordinate(readingItemAt: sourceURL, options: [.forUploading], error: nil) { (zipURL) in
+    private func showDeleteConfirmation(for folderURL: URL) {
+        let alertController = UIAlertController(title: "Folder Shared", message: "Do you want to delete the folder?", preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
             do {
-                try self.moveItem(at: zipURL, to: destinationURL)
+                try FileManager.default.removeItem(at: folderURL)
+                print("Folder deleted.")
+                loadFolders()
             } catch {
-                zipError = error
+                print("Error deleting folder: \(error)")
             }
         }
-        if let error = zipError {
-            throw error
+        let keepAction = UIAlertAction(title: "Keep", style: .cancel, handler: nil)
+        
+        alertController.addAction(deleteAction)
+        alertController.addAction(keepAction)
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootViewController = windowScene.windows.first?.rootViewController {
+            rootViewController.present(alertController, animated: true, completion: nil)
         }
     }
 }
 
-//
-//#Preview {
-//    ContentView()
-//        .modelContainer(for: Item.self, inMemory: true)
-//}
+
+struct ActivityViewController: UIViewControllerRepresentable {
+    var folderURL: URL
+    var completion: (() -> Void)?
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        let activityVC = UIActivityViewController(activityItems: [folderURL], applicationActivities: nil)
+        activityVC.completionWithItemsHandler = { (activityType, completed, returnedItems, activityError) in
+            if completed {
+                self.completion?()
+            }
+        }
+        return activityVC
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
+        // Nothing to update here
+    }
+}
