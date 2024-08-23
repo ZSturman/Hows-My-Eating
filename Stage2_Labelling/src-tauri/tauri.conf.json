@@ -13,11 +13,22 @@
     "allowlist": {
       "protocol": {
         "asset": true,
-        "assetScope": ["$DESKTOP", "$HOME"]
+        "assetScope": [
+          "$APPDATA/**",
+          "$APPDATA/**/*",
+          "$DESKTOP/**/*",
+          "$HOME/**"
+        ]
       },
       "fs": {
-        "all": true,
-        "scope": ["$DESKTOP", "$HOME"]
+        "readDir": true,
+        "copyFile": true,
+        "createDir": true,
+        "exists": true,
+        "readFile": true,
+        "removeDir": true,
+        "writeFile": true,
+        "scope": ["$DESKTOP/**", "$HOME/**", "$APPDATA/**"]
       },
       "dialog": {
         "all": true,
@@ -35,8 +46,8 @@
     "windows": [
       {
         "title": "stage2_transform_and_label",
-        "width": 800,
-        "height": 600
+        "width": 1000,
+        "height": 800
       }
     ],
     "security": {

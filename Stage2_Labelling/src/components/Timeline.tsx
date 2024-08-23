@@ -1,8 +1,23 @@
+import React from 'react';
 
-const Timeline = () => {
+type TimelineProps = {
+  played: number;
+  duration: number;
+  onSeekChange: (newPlayed: number) => void;
+};
+
+const Timeline: React.FC<TimelineProps> = ({ played, duration, onSeekChange }) => {
   return (
-    <div className="w-full p-2 bg-slate-900 text-zinc-100">Timeline</div>
-  )
-}
+    <input
+      type="range"
+      min="0"
+      max="1"
+      step="0.01"
+      value={played}
+      onChange={(e) => onSeekChange(parseFloat(e.target.value))}
+      className="w-full mx-2"
+    />
+  );
+};
 
-export default Timeline
+export default Timeline;
