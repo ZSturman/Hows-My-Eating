@@ -4,9 +4,10 @@ import { formatDateTime } from '../utils/formatting';
 
 type ImportedDataDirectoriesProps = {
     setSelectedDataPath: React.Dispatch<React.SetStateAction<string | null>>;
+    refreshTrigger: number;  // Add this prop to trigger re-fetch
 };
 
-const ImportedDataDirectories: React.FC<ImportedDataDirectoriesProps> = ({ setSelectedDataPath }) => {
+const ImportedDataDirectories: React.FC<ImportedDataDirectoriesProps> = ({ setSelectedDataPath, refreshTrigger }) => {
     const [importedDirectories, setImportedDirectories] = useState<{ path: string, displayName: string }[]>([]);
     const [directoryContents, setDirectoryContents] = useState<{ [key: string]: string[] }>({});
 
@@ -34,7 +35,7 @@ const ImportedDataDirectories: React.FC<ImportedDataDirectoriesProps> = ({ setSe
         };
 
         fetchImportedDirectories();
-    }, []);
+    }, [refreshTrigger]); // Add refreshTrigger as a dependency
 
     const fetchDirectoryContents = async (dirPath: string) => {
         try {

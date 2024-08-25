@@ -4,7 +4,7 @@ import {
   exists,
   copyFile,
   createDir,
-  writeTextFile,
+  writeTextFile
 } from "@tauri-apps/api/fs";
 import { basename } from "@tauri-apps/api/path";
 import { desktopDir } from "@tauri-apps/api/path";
@@ -25,7 +25,10 @@ export const handleOpenFileDialog = async (
         // Validate the directory
         const validationMessages = await validateSelectedDirectory(dir);
         if (validationMessages.length > 0) {
-          setMessages((prevMessages) => [...prevMessages, ...validationMessages]);
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            ...validationMessages,
+          ]);
         } else {
           // Save files to AppData
           const saveResult = await saveFilesToAppData(dir);
@@ -34,7 +37,9 @@ export const handleOpenFileDialog = async (
       }
     } else {
       // Validate the directory
-      const validationMessages = await validateSelectedDirectory(selectedDirectory);
+      const validationMessages = await validateSelectedDirectory(
+        selectedDirectory
+      );
       if (validationMessages.length > 0) {
         setMessages((prevMessages) => [...prevMessages, ...validationMessages]);
       } else {
@@ -46,9 +51,7 @@ export const handleOpenFileDialog = async (
   }
 };
 
-export async function checkRequiredFiles(
-  directory: string
-): Promise<{
+export async function checkRequiredFiles(directory: string): Promise<{
   hasJson: boolean | string;
   hasMov: boolean | string;
   hasCsv: boolean | string;
@@ -113,7 +116,8 @@ export const validateSelectedDirectory = async (
     if (!hasRequiredFiles.hasJson) {
       const flashMessage = {
         title: "Error",
-        message: "Directory must contain a .json file matching the directory name.",
+        message:
+          "Directory must contain a .json file matching the directory name.",
         type: "error" as "error",
       };
       validationMessages.push(flashMessage);
@@ -122,7 +126,8 @@ export const validateSelectedDirectory = async (
     if (!hasRequiredFiles.hasMov) {
       const flashMessage = {
         title: "Error",
-        message: "Directory must contain a .mov file matching the directory name.",
+        message:
+          "Directory must contain a .mov file matching the directory name.",
         type: "error" as "error",
       };
       validationMessages.push(flashMessage);
@@ -172,17 +177,27 @@ export async function saveFilesToAppData(
 
     // Create tracking.json file inside the destination directory
     const trackingJsonPath = `${destinationDirectory}/tracking.json`;
-    const trackingJsonExists = await exists(trackingJsonPath, { dir: BaseDirectory.AppData });
+    const trackingJsonExists = await exists(trackingJsonPath, {
+      dir: BaseDirectory.AppData,
+    });
 
     if (!trackingJsonExists) {
-      const trackingData = {
+      const trackingData: TrackingJson = {
         importedAt: new Date().toISOString(),
-        sourceDirectory: sourceDirectory,
-        manipulated: false,
+        path: sourceDirectory,
+        synced: false,
+        movLength: 0,
+        jsonLength: 0,
+        firstMotionTimestamp: 0,
+        csvs: [],
       };
-      await writeTextFile(trackingJsonPath, JSON.stringify(trackingData, null, 2), {
-        dir: BaseDirectory.AppData,
-      });
+      await writeTextFile(
+        trackingJsonPath,
+        JSON.stringify(trackingData, null, 2),
+        {
+          dir: BaseDirectory.AppData,
+        }
+      );
       console.log(`Tracking JSON created at ${trackingJsonPath}`);
     }
 
@@ -198,3 +213,6 @@ export async function saveFilesToAppData(
     ];
   }
 }
+
+
+

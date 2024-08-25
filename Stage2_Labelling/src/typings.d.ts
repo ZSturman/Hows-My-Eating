@@ -47,3 +47,23 @@ type FlashMessage = {
     message: string;
     type: 'success' | 'error' | 'info' | 'warning';
 }
+
+type TrackingJson = {
+    importedAt: string;
+    path: string;
+    synced: boolean;
+    movLength: number;
+    jsonLength: number;
+    firstMotionTimestamp: number;
+    csvs: [
+      {
+        path: string;
+        labels: string[];
+        movStartTime: number;
+        movEndTime: number;
+        numberOfRows: number;
+        numberOfLabelledRows: number;
+      }?
+    ];
+  };
+  

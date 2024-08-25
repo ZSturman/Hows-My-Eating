@@ -19,7 +19,6 @@ class CameraManager: NSObject, ObservableObject, AVCaptureFileOutputRecordingDel
     private var previewLayer: AVCaptureVideoPreviewLayer?
     
     @Published var videoURL: URL?
-    var recordingStartTime: Date?
 
     // MARK: - Setup Camera
     func setupCamera() {
@@ -82,10 +81,10 @@ class CameraManager: NSObject, ObservableObject, AVCaptureFileOutputRecordingDel
     
     
     // MARK: - Start Recording
-    func startRecording(to fileURL: URL? = nil, startTime: Date?) {
-        self.recordingStartTime = startTime
+    func startRecording(to fileURL: URL? = nil) {
+ 
         print("Camera Manager: Start Recording")
-        // Return early if already recording.
+
         guard !movieOutput.isRecording else { return }
         
         guard let connection = movieOutput.connection(with: .video) else {
@@ -105,7 +104,7 @@ class CameraManager: NSObject, ObservableObject, AVCaptureFileOutputRecordingDel
         delegate = MovieCaptureDelegate()
         
         // Determine the output URL. If none is provided, save to the default location.
-        let outputURL = fileURL ?? URL.applicationSupportDirectory.appendingPathComponent("\(Date().timeIntervalSince1970).mov")
+        let outputURL = fileURL ?? URL.applicationSupportDirectory.appendingPathComponent("\(Date()).mov")
         
         movieOutput.startRecording(to: outputURL, recordingDelegate: delegate!)
     }

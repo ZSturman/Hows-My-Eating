@@ -58,18 +58,20 @@ final class CapturedMotionAndMovieData {
 
 
 struct MotionData: Codable {
-    var timestamp: TimeInterval
+    var timestamp: Date
     var attitude: Attitude
     var rotationRate: RotationRate
     var userAcceleration: UserAcceleration
     var gravity: Gravity
+    let transformedRotation: TransformedRotation
 
-    init(timestamp: TimeInterval, attitude: Attitude, rotationRate: RotationRate, userAcceleration: UserAcceleration, gravity: Gravity) {
+    init(timestamp: Date, attitude: Attitude, rotationRate: RotationRate, userAcceleration: UserAcceleration, gravity: Gravity, transformedRotation: TransformedRotation) {
         self.timestamp = timestamp
         self.attitude = attitude
         self.rotationRate = rotationRate
         self.userAcceleration = userAcceleration
         self.gravity = gravity
+        self.transformedRotation = transformedRotation
     }
     
 }
@@ -108,4 +110,24 @@ struct UserAcceleration: Codable {
     static let zero = UserAcceleration(x: 0.0, y: 0.0, z: 0.0)
 }
 
-var defaultMotionData = MotionData(timestamp: 0.0, attitude: .zero, rotationRate: .zero, userAcceleration: .zero, gravity: .zero)
+struct TransformedRotation: Codable {
+    let x: Double
+    let y: Double
+    let z: Double
+    let w: Double
+    
+    static let zero = TransformedRotation(x: 0.0, y: 0.0, z: 0.0, w: 0.0)
+}
+
+var defaultMotionData = MotionData(timestamp: .now, attitude: .zero, rotationRate: .zero, userAcceleration: .zero, gravity: .zero, transformedRotation: .zero)
+
+extension float4x4 {
+    init(rotationMatrix r: CMRotationMatrix) {
+        self.init([
+            simd_float4(Float(-r.m11), Float(r.m13), Float(r.m12), 0.0),
+            simd_float4(Float(-r.m31), Float(r.m33), Float(r.m32), 0.0),
+            simd_float4(Float(-r.m21), Float(r.m23), Float(r.m22), 0.0),
+            simd_float4(          0.0,          0.0,          0.0, 1.0)
+        ])
+    }
+}
