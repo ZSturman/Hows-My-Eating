@@ -1,0 +1,13 @@
+# MediaPipe Face Mesh landmark indices for nose and chin (reference)
+# Source: https://github.com/tensorflow/tfjs-models/blob/master/face-landmarks-detection/mesh_map.jpg
+# Common indices:
+# - Nose tip: 1
+# - Chin: 152
+# - Upper lip: 13
+# - Lower lip: 14
+# - Left mouth: 61
+# - Right mouth: 291
+# - Nose base: 2
+# - Nose bridge: 6, 168
+#
+# Use these indices for extracting nose and chin points in MediaPipe Face Mesh.

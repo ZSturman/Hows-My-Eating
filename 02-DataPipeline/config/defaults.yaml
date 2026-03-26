@@ -1,0 +1,95 @@
+# ChewSense Pipeline Configuration
+# 
+# This file contains all tunable parameters for the pipeline.
+# Override any parameter via CLI: python main.py --lr 0.001
+# Or use a custom config: python main.py --config path/to/custom.yaml
+#
+# Parameters are organized by category:
+# - training: Model training hyperparameters
+# - features: Feature extraction parameters
+# - soft_labels: Soft label generation parameters
+# - runtime: Real-time inference parameters (logged with model, used in app)
+
+# =============================================================================
+# TRAINING PARAMETERS
+# =============================================================================
+# These affect model training and are logged to W&B
+
+training:
+  batch_size: 256
+  lr: 0.001
+  epochs: 50
+  val_ratio: 0.2
+  hidden_dim: 32
+  patience: 5
+
+# =============================================================================
+# FEATURE EXTRACTION PARAMETERS
+# =============================================================================
+# These affect how raw sensor data is converted to feature vectors
+
+features:
+  window_sec: 0.75      # Sliding window duration in seconds
+  step_sec: 0.10        # Step size between windows in seconds
+  # Sampling rate is auto-detected from data
+
+# =============================================================================
+# SOFT LABEL GENERATION PARAMETERS
+# =============================================================================
+# These control how hard 0/1 labels are converted to soft continuous labels
+# for smoother training (captures transition dynamics)
+
+soft_labels:
+  transition_sec: 0.6   # Short chew transition ramp duration
+  long_chew_sec: 3.0    # Threshold (seconds) to consider a chew "long"
+  long_ramp_sec: 1.5    # Ramp duration for long chews
+
+# =============================================================================
+# EVALUATION PARAMETERS
+# =============================================================================
+# Thresholds for binarizing soft labels and predictions during evaluation
+
+evaluation:
+  chew_threshold: 0.5   # Threshold to binarize soft labels (y >= 0.5 → chewing)
+  pred_threshold: 0.5   # Threshold to binarize model probabilities
+
+# =============================================================================
+# RUNTIME INFERENCE PARAMETERS
+# =============================================================================
+# These are used by the iOS/macOS app for real-time chewing detection.
+# They are logged with the model so the app can use the same values.
+# Changing these DOES NOT require retraining - they are post-processing params.
+
+runtime:
+  alpha: 0.4            # EMA smoothing factor (0 = no smoothing, 1 = no memory)
+  high_threshold: 0.6   # Probability threshold to START chewing episode
+  low_threshold: 0.4    # Probability threshold to END chewing episode
+  min_start_windows: 3  # Consecutive windows above high_threshold to confirm start
+  min_end_windows: 2    # Consecutive windows below low_threshold to confirm end
+
+# =============================================================================
+# MOUTH SHAPE ESTIMATION
+# =============================================================================
+# Parameters for the mouth shape regression pipeline.
+# When mode is "mouth_shape", the pipeline trains a multi-output regressor
+# instead of binary chewing classifier.
+
+mouth_shape:
+  enabled: false         # Set to true to use mouth shape regression mode
+  parameters:            # Output parameter names (order matters)
+    - mouth_openness
+    - mouth_width
+    - jaw_displacement
+    - lip_compression
+  num_outputs: 4
+  video_fps: 30          # Expected video framerate for mouth shape extraction
+  interpolation: linear  # Interpolation method for aligning video to motion
+  temporal_smooth_sigma: 0.0  # Gaussian smoothing sigma (0 = disabled)
+
+# =============================================================================
+# WEIGHTS & BIASES
+# =============================================================================
+wandb:
+  project: "chewsense"
+  entity: null          # Optional: W&B team/username
+  enabled: true         # Set to false to disable W&B logging

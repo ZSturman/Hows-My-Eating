@@ -1,0 +1,597 @@
+[
+  {
+    "csv_file": "aspect_ratio_nose_to_lips_lips_to_chin_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1380,
+        "lips": 185,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 1387,
+        "lips": 306,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_3": {
+        "teeth": 1595,
+        "lips": 856,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_4": {
+        "teeth": 1342,
+        "lips": 1221,
+        "teeth_flip": false,
+        "lips_flip": false
+      },
+      "thresh_5": {
+        "teeth": 972,
+        "lips": 1382,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "aspect_ratio__mouth_width__outside_lips_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1242,
+        "lips": 251,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 759,
+        "lips": 455,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_3": {
+        "teeth": 426,
+        "lips": 671,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_4": {
+        "teeth": 644,
+        "lips": 1147,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_5": {
+        "teeth": 831,
+        "lips": 1433,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "anchor_to_top_lip_top_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1324,
+        "lips": 225,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 835,
+        "lips": 708,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_3": {
+        "teeth": 952,
+        "lips": 1440,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_4": {
+        "teeth": 864,
+        "lips": 1466,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_5": {
+        "teeth": 842,
+        "lips": 1450,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "aspect_ratio_top_lip_heigh_to_mouth_width_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1377,
+        "lips": 170,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 1313,
+        "lips": 340,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_3": {
+        "teeth": 1099,
+        "lips": 915,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_4": {
+        "teeth": 979,
+        "lips": 1323,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_5": {
+        "teeth": 873,
+        "lips": 1433,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "aspect_ratio__mouth_width__inside_lips_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 597,
+        "lips": 1145,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 793,
+        "lips": 1395,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_3": {
+        "teeth": 827,
+        "lips": 1435,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_4": {
+        "teeth": 836,
+        "lips": 1444,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_5": {
+        "teeth": 837,
+        "lips": 1445,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "anchor_to_top_lip_bottom_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1227,
+        "lips": 263,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 800,
+        "lips": 583,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_3": {
+        "teeth": 706,
+        "lips": 897,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_4": {
+        "teeth": 857,
+        "lips": 1300,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_5": {
+        "teeth": 834,
+        "lips": 1439,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "anchor_to_top_lip_bottom_center_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1247,
+        "lips": 250,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 822,
+        "lips": 497,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_3": {
+        "teeth": 632,
+        "lips": 763,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_4": {
+        "teeth": 743,
+        "lips": 1132,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_5": {
+        "teeth": 822,
+        "lips": 1424,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "anchor_to_bottom_lip_top_center_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1272,
+        "lips": 236,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 865,
+        "lips": 453,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_3": {
+        "teeth": 633,
+        "lips": 686,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_4": {
+        "teeth": 702,
+        "lips": 1067,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_5": {
+        "teeth": 829,
+        "lips": 1422,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "aspect_ratio__mouth_width__nose_to_chin_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1242,
+        "lips": 251,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 759,
+        "lips": 455,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_3": {
+        "teeth": 426,
+        "lips": 671,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_4": {
+        "teeth": 644,
+        "lips": 1147,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_5": {
+        "teeth": 831,
+        "lips": 1433,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "anchor_to_nose_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1380,
+        "lips": 194,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 1368,
+        "lips": 314,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_3": {
+        "teeth": 1441,
+        "lips": 741,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_4": {
+        "teeth": 1154,
+        "lips": 1381,
+        "teeth_flip": false,
+        "lips_flip": false
+      },
+      "thresh_5": {
+        "teeth": 864,
+        "lips": 1457,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "aspect_ratio_between_lips_to_mouth_width_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1797,
+        "lips": 911,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 1238,
+        "lips": 1405,
+        "teeth_flip": false,
+        "lips_flip": false
+      },
+      "thresh_3": {
+        "teeth": 918,
+        "lips": 1499,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_4": {
+        "teeth": 870,
+        "lips": 1472,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_5": {
+        "teeth": 848,
+        "lips": 1456,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "anchor_to_chin_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1364,
+        "lips": 190,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 1188,
+        "lips": 275,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_3": {
+        "teeth": 892,
+        "lips": 561,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_4": {
+        "teeth": 908,
+        "lips": 1357,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_5": {
+        "teeth": 844,
+        "lips": 1446,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "anchor_to_bottom_lip_top_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1267,
+        "lips": 240,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 848,
+        "lips": 472,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_3": {
+        "teeth": 626,
+        "lips": 742,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_4": {
+        "teeth": 791,
+        "lips": 1204,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_5": {
+        "teeth": 839,
+        "lips": 1438,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "aspect_ratio_bottom_lip_heigh_to_mouth_width_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1361,
+        "lips": 211,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 1374,
+        "lips": 800,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_3": {
+        "teeth": 1164,
+        "lips": 1331,
+        "teeth_flip": false,
+        "lips_flip": false
+      },
+      "thresh_4": {
+        "teeth": 898,
+        "lips": 1452,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_5": {
+        "teeth": 850,
+        "lips": 1452,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "anchor_to_top_lip_top_center_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1241,
+        "lips": 253,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 776,
+        "lips": 550,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_3": {
+        "teeth": 695,
+        "lips": 955,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_4": {
+        "teeth": 880,
+        "lips": 1407,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_5": {
+        "teeth": 846,
+        "lips": 1454,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "anchor_to_bottom_lip_bottom_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1240,
+        "lips": 255,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 734,
+        "lips": 709,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_3": {
+        "teeth": 893,
+        "lips": 1393,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_4": {
+        "teeth": 877,
+        "lips": 1464,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_5": {
+        "teeth": 852,
+        "lips": 1454,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  },
+  {
+    "csv_file": "anchor_to_bottom_lip_bottom_center_thresholds.csv",
+    "results": {
+      "thresh_1": {
+        "teeth": 1276,
+        "lips": 234,
+        "teeth_flip": false,
+        "lips_flip": true
+      },
+      "thresh_2": {
+        "teeth": 805,
+        "lips": 540,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_3": {
+        "teeth": 727,
+        "lips": 996,
+        "teeth_flip": true,
+        "lips_flip": true
+      },
+      "thresh_4": {
+        "teeth": 884,
+        "lips": 1447,
+        "teeth_flip": true,
+        "lips_flip": false
+      },
+      "thresh_5": {
+        "teeth": 858,
+        "lips": 1460,
+        "teeth_flip": true,
+        "lips_flip": false
+      }
+    }
+  }
+]

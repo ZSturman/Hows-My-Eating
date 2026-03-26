@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "frame": 115,
+        "timestamp": 3.8335,
+        "teeth": "Open",
+        "lips": "Closed",
+        "action": "Other"
+    },
+    {
+        "id": 2,
+        "frame": 125,
+        "timestamp": 4.1668,
+        "teeth": "Open",
+        "lips": "Closed",
+        "action": "Other"
+    },
+    {
+        "id": 3,
+        "frame": 128,
+        "timestamp": 4.2668,
+        "teeth": "Closed",
+        "lips": "Closed",
+        "action": "Other"
+    },
+    {
+        "id": 4,
+        "frame": 132,
+        "timestamp": 4.4002,
+        "teeth": "Closed",
+        "lips": "Closed",
+        "action": "Other"
+    },
+    {
+        "id": 5,
+        "frame": 143,
+        "timestamp": 4.7668,
+        "teeth": "Closed",
+        "lips": "Open",
+        "action": "Other"
+    },
+    {
+        "id": 6,
+        "frame": 156,
+        "timestamp": 5.2002,
+        "teeth": "Closed",
+        "lips": "Open",
+        "action": "Bite"
+    }
+]

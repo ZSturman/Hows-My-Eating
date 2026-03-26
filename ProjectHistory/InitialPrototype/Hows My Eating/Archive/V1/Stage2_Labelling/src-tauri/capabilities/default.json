@@ -1,0 +1,130 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Capability for the main window",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default",
+    "opener:default",
+    "fs:default",
+    "fs:allow-copy-file",
+    "fs:allow-create",
+    "fs:allow-write",
+    "fs:allow-open",
+    "fs:allow-write-text-file",
+    "fs:allow-watch",
+    "fs:allow-unwatch",
+    "fs:allow-app-meta",
+    "fs:allow-app-meta-recursive",
+    "fs:allow-remove",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        {
+          "path": "$APPDATA",
+          "recursive": true
+        },
+        {
+          "path": "$APPDATA/*"
+        },
+        {
+          "path": "$APPDATA/**"
+   
+        },
+        {
+          "path": "$HOME"
+        },
+        {
+          "path": "$HOME/*"
+        },
+        {
+          "path": "$HOME/**"
+        },
+        {
+          "path": "$DESKTOP"
+        },
+        {
+          "path": "$DESKTOP/*"
+        },
+        {
+          "path": "$DESKTOP/**"
+        },
+        {
+          "path": "$DOCUMENTS"
+        },
+        {
+          "path": "$DOCUMENTS/*"
+        },
+        {
+          "path": "$DOCUMENTS/**"
+        },
+        {
+          "path": "$DOWNLOADS"
+        },
+        {
+          "path": "$DOWNLOADS/*"
+        },
+        {
+          "path": "$DOWNLOADS/**"
+        },
+        {
+          "path": "$TEMP"
+        },
+        {
+          "path": "$TEMP/*"
+        },
+        {
+          "path": "$TEMP/**"
+        },
+        {
+          "path": "$RESOURCES/**"
+        }
+      ]
+    },
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "name": "binaries/collect-mov-info",
+          "args": true,
+          "sidecar": true
+        },
+        {
+          "name": "binaries/process-visuals",
+          "args": true,
+          "sidecar": true
+        },
+        {
+          "name": "binaries/compute-ratios",
+          "args": true,
+          "sidecar": true
+        },
+        {
+          "name": "binaries/merge",
+          "args": true,
+          "sidecar": true
+        },
+        {
+          "name": "binaries/chunks",
+          "args": true,
+          "sidecar": true
+        },
+        {
+          "name": "binaries/exporting",
+          "args": true,
+          "sidecar": true
+        },
+        {
+          "name": "binaries/not_chew",
+          "args": true,
+          "sidecar": true
+        }
+      ]
+    },
+    "shell:allow-open",
+    "store:default",
+    "dialog:default"
+  ]
+}

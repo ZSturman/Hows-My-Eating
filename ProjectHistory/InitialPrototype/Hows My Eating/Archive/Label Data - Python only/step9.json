@@ -1,0 +1,206 @@
+{
+    "aspect_ratio_nose_to_lips_lips_to_chin": {
+        "lips": {
+            "threshold": "thresh_5",
+            "flipped": false,
+            "num_correct": 1382
+        },
+        "teeth": {
+            "threshold": "thresh_3",
+            "flipped": false,
+            "num_correct": 1595
+        }
+    },
+    "aspect_ratio__mouth_width__outside_lips": {
+        "lips": {
+            "threshold": "thresh_5",
+            "flipped": false,
+            "num_correct": 1433
+        },
+        "teeth": {
+            "threshold": "thresh_1",
+            "flipped": false,
+            "num_correct": 1242
+        }
+    },
+    "anchor_to_top_lip_top": {
+        "lips": {
+            "threshold": "thresh_4",
+            "flipped": false,
+            "num_correct": 1466
+        },
+        "teeth": {
+            "threshold": "thresh_1",
+            "flipped": false,
+            "num_correct": 1324
+        }
+    },
+    "aspect_ratio_top_lip_heigh_to_mouth_width": {
+        "lips": {
+            "threshold": "thresh_5",
+            "flipped": false,
+            "num_correct": 1433
+        },
+        "teeth": {
+            "threshold": "thresh_1",
+            "flipped": false,
+            "num_correct": 1377
+        }
+    },
+    "aspect_ratio__mouth_width__inside_lips": {
+        "lips": {
+            "threshold": "thresh_5",
+            "flipped": false,
+            "num_correct": 1445
+        },
+        "teeth": {
+            "threshold": "thresh_1",
+            "flipped": true,
+            "num_correct": 937
+        }
+    },
+    "anchor_to_top_lip_bottom": {
+        "lips": {
+            "threshold": "thresh_5",
+            "flipped": false,
+            "num_correct": 1439
+        },
+        "teeth": {
+            "threshold": "thresh_1",
+            "flipped": false,
+            "num_correct": 1227
+        }
+    },
+    "anchor_to_top_lip_bottom_center": {
+        "lips": {
+            "threshold": "thresh_5",
+            "flipped": false,
+            "num_correct": 1424
+        },
+        "teeth": {
+            "threshold": "thresh_1",
+            "flipped": false,
+            "num_correct": 1247
+        }
+    },
+    "anchor_to_bottom_lip_top_center": {
+        "lips": {
+            "threshold": "thresh_5",
+            "flipped": false,
+            "num_correct": 1422
+        },
+        "teeth": {
+            "threshold": "thresh_1",
+            "flipped": false,
+            "num_correct": 1272
+        }
+    },
+    "aspect_ratio__mouth_width__nose_to_chin": {
+        "lips": {
+            "threshold": "thresh_5",
+            "flipped": false,
+            "num_correct": 1433
+        },
+        "teeth": {
+            "threshold": "thresh_1",
+            "flipped": false,
+            "num_correct": 1242
+        }
+    },
+    "anchor_to_nose": {
+        "lips": {
+            "threshold": "thresh_5",
+            "flipped": false,
+            "num_correct": 1457
+        },
+        "teeth": {
+            "threshold": "thresh_3",
+            "flipped": false,
+            "num_correct": 1441
+        }
+    },
+    "aspect_ratio_between_lips_to_mouth_width": {
+        "lips": {
+            "threshold": "thresh_3",
+            "flipped": false,
+            "num_correct": 1499
+        },
+        "teeth": {
+            "threshold": "thresh_1",
+            "flipped": false,
+            "num_correct": 1797
+        }
+    },
+    "anchor_to_chin": {
+        "lips": {
+            "threshold": "thresh_5",
+            "flipped": false,
+            "num_correct": 1446
+        },
+        "teeth": {
+            "threshold": "thresh_1",
+            "flipped": false,
+            "num_correct": 1364
+        }
+    },
+    "anchor_to_bottom_lip_top": {
+        "lips": {
+            "threshold": "thresh_5",
+            "flipped": false,
+            "num_correct": 1438
+        },
+        "teeth": {
+            "threshold": "thresh_1",
+            "flipped": false,
+            "num_correct": 1267
+        }
+    },
+    "aspect_ratio_bottom_lip_heigh_to_mouth_width": {
+        "lips": {
+            "threshold": "thresh_4",
+            "flipped": false,
+            "num_correct": 1452
+        },
+        "teeth": {
+            "threshold": "thresh_2",
+            "flipped": false,
+            "num_correct": 1374
+        }
+    },
+    "anchor_to_top_lip_top_center": {
+        "lips": {
+            "threshold": "thresh_5",
+            "flipped": false,
+            "num_correct": 1454
+        },
+        "teeth": {
+            "threshold": "thresh_1",
+            "flipped": false,
+            "num_correct": 1241
+        }
+    },
+    "anchor_to_bottom_lip_bottom": {
+        "lips": {
+            "threshold": "thresh_4",
+            "flipped": false,
+            "num_correct": 1464
+        },
+        "teeth": {
+            "threshold": "thresh_1",
+            "flipped": false,
+            "num_correct": 1240
+        }
+    },
+    "anchor_to_bottom_lip_bottom_center": {
+        "lips": {
+            "threshold": "thresh_5",
+            "flipped": false,
+            "num_correct": 1460
+        },
+        "teeth": {
+            "threshold": "thresh_1",
+            "flipped": false,
+            "num_correct": 1276
+        }
+    }
+}

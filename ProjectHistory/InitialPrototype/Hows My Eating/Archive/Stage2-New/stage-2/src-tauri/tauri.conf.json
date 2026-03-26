@@ -1,0 +1,120 @@
+{
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist"
+  },
+  "package": {
+    "productName": "stage-2",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "http": {
+        "all": true,
+        "request": true,
+        "scope": ["https://**"]
+      },
+      "protocol": {
+        "asset": true,
+        "assetScope": [
+          "$APPDATA/**",
+          "$APPDATA/**/*",
+          "$DESKTOP/**/*",
+          "$HOME/**",
+          "demo/**",
+          "demo/**/*",
+          "demo/*",
+          "$LOCALAPPDATA/**"
+
+        ]
+      },
+      "all": true,
+      "dialog": {
+        "all": true
+      },
+      "shell": {
+        "execute": true,
+        "sidecar": true,
+        "scope": [
+          {
+            "name": "bin/get_mov_info",
+            "sidecar": true,
+            "args": true
+          },
+          {
+            "name": "bin/extract_audio",
+            "sidecar": true,
+            "args": true
+          },
+          {
+            "name": "bin/create_csv",
+            "sidecar": true,
+            "args": true
+          },
+          {
+            "name": "bin/get_motion_data_info",
+            "sidecar": true,
+            "args": true
+          },
+          {
+            "name": "bin/calculate_areas",
+            "sidecar": true,
+            "args": true
+          }
+        ]
+      },
+      "fs": {
+        "all": true,
+        "scope": [
+          "$APPDATA/",
+          "$APPDATA/*",
+          "$APPDATA/**/*",
+          "$LOCALAPPDATA/",
+          "$LOCALAPPDATA/*",
+          "$PROGRAMFILES/",
+          "$PROGRAMFILES/*",
+          "$PROGRAMFILES (x86)/",
+          "$PROGRAMFILES (x86)/*",
+          "$TEMP/",
+          "$TMP/",
+          "$TMPDIR/",
+          "$HOME/"
+        ]
+      },
+      "path": {
+        "all": true
+      }
+    },
+    "windows": [
+      {
+        "title": "How's my eating? - Stage 2: Labelling",
+        "width": 800,
+        "height": 600
+      }
+    ],
+    "security": {
+      "csp": null
+    },
+    "bundle": {
+      "externalBin": [
+        "bin/get_mov_info",
+        "bin/get_motion_data_info",
+        "bin/extract_audio",
+        "bin/create_csv",
+        "bin/calculate_areas"
+      ],
+      "active": true,
+      "targets": "all",
+      "identifier": "com.stage-2.app",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ]
+    }
+  }
+}

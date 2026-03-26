@@ -1,0 +1,971 @@
+[
+    {
+        "csv": "aspect_ratio_nose_to_lips_lips_to_chin_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1382
+            },
+            "2": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 1349
+            },
+            "3": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 1228
+            },
+            "4": {
+                "thresh": "thresh_4",
+                "flipped": false,
+                "num_correct": 1221
+            },
+            "5": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 678
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_3",
+                "flipped": false,
+                "num_correct": 1595
+            },
+            "2": {
+                "thresh": "thresh_2",
+                "flipped": false,
+                "num_correct": 1387
+            },
+            "3": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1380
+            },
+            "4": {
+                "thresh": "thresh_4",
+                "flipped": false,
+                "num_correct": 1342
+            },
+            "5": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 562
+            }
+        }
+    },
+    {
+        "csv": "aspect_ratio__mouth_width__outside_lips_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1433
+            },
+            "2": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 1283
+            },
+            "3": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 1079
+            },
+            "4": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 863
+            },
+            "5": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 387
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1242
+            },
+            "2": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 1108
+            },
+            "3": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 890
+            },
+            "4": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 775
+            },
+            "5": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 703
+            }
+        }
+    },
+    {
+        "csv": "anchor_to_top_lip_top_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_4",
+                "flipped": false,
+                "num_correct": 1466
+            },
+            "2": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1450
+            },
+            "3": {
+                "thresh": "thresh_3",
+                "flipped": false,
+                "num_correct": 1440
+            },
+            "4": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 1309
+            },
+            "5": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 826
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1324
+            },
+            "2": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 699
+            },
+            "3": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 692
+            },
+            "4": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 670
+            },
+            "5": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 582
+            }
+        }
+    },
+    {
+        "csv": "aspect_ratio_top_lip_heigh_to_mouth_width_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1433
+            },
+            "2": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 1364
+            },
+            "3": {
+                "thresh": "thresh_4",
+                "flipped": false,
+                "num_correct": 1323
+            },
+            "4": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 1194
+            },
+            "5": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 619
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1377
+            },
+            "2": {
+                "thresh": "thresh_2",
+                "flipped": false,
+                "num_correct": 1313
+            },
+            "3": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 661
+            },
+            "4": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 555
+            },
+            "5": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 435
+            }
+        }
+    },
+    {
+        "csv": "aspect_ratio__mouth_width__inside_lips_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1445
+            },
+            "2": {
+                "thresh": "thresh_4",
+                "flipped": false,
+                "num_correct": 1444
+            },
+            "3": {
+                "thresh": "thresh_3",
+                "flipped": false,
+                "num_correct": 1435
+            },
+            "4": {
+                "thresh": "thresh_2",
+                "flipped": false,
+                "num_correct": 1395
+            },
+            "5": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 389
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 937
+            },
+            "2": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 741
+            },
+            "3": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 707
+            },
+            "4": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 698
+            },
+            "5": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 697
+            }
+        }
+    },
+    {
+        "csv": "anchor_to_top_lip_bottom_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1439
+            },
+            "2": {
+                "thresh": "thresh_4",
+                "flipped": false,
+                "num_correct": 1300
+            },
+            "3": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 1271
+            },
+            "4": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 951
+            },
+            "5": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 637
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1227
+            },
+            "2": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 828
+            },
+            "3": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 734
+            },
+            "4": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 700
+            },
+            "5": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 677
+            }
+        }
+    },
+    {
+        "csv": "anchor_to_top_lip_bottom_center_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1424
+            },
+            "2": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 1284
+            },
+            "3": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 1037
+            },
+            "4": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 771
+            },
+            "5": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 402
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1247
+            },
+            "2": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 902
+            },
+            "3": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 791
+            },
+            "4": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 712
+            },
+            "5": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 712
+            }
+        }
+    },
+    {
+        "csv": "anchor_to_bottom_lip_top_center_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1422
+            },
+            "2": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 1298
+            },
+            "3": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 1081
+            },
+            "4": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 848
+            },
+            "5": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 467
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1272
+            },
+            "2": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 901
+            },
+            "3": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 832
+            },
+            "4": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 705
+            },
+            "5": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 669
+            }
+        }
+    },
+    {
+        "csv": "aspect_ratio__mouth_width__nose_to_chin_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1433
+            },
+            "2": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 1283
+            },
+            "3": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 1079
+            },
+            "4": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 863
+            },
+            "5": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 387
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1242
+            },
+            "2": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 1108
+            },
+            "3": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 890
+            },
+            "4": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 775
+            },
+            "5": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 703
+            }
+        }
+    },
+    {
+        "csv": "anchor_to_nose_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1457
+            },
+            "2": {
+                "thresh": "thresh_4",
+                "flipped": false,
+                "num_correct": 1381
+            },
+            "3": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 1340
+            },
+            "4": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 1220
+            },
+            "5": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 793
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_3",
+                "flipped": false,
+                "num_correct": 1441
+            },
+            "2": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1380
+            },
+            "3": {
+                "thresh": "thresh_2",
+                "flipped": false,
+                "num_correct": 1368
+            },
+            "4": {
+                "thresh": "thresh_4",
+                "flipped": false,
+                "num_correct": 1154
+            },
+            "5": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 670
+            }
+        }
+    },
+    {
+        "csv": "aspect_ratio_between_lips_to_mouth_width_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_3",
+                "flipped": false,
+                "num_correct": 1499
+            },
+            "2": {
+                "thresh": "thresh_4",
+                "flipped": false,
+                "num_correct": 1472
+            },
+            "3": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1456
+            },
+            "4": {
+                "thresh": "thresh_2",
+                "flipped": false,
+                "num_correct": 1405
+            },
+            "5": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 623
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1797
+            },
+            "2": {
+                "thresh": "thresh_2",
+                "flipped": false,
+                "num_correct": 1238
+            },
+            "3": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 686
+            },
+            "4": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 664
+            },
+            "5": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 616
+            }
+        }
+    },
+    {
+        "csv": "anchor_to_chin_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1446
+            },
+            "2": {
+                "thresh": "thresh_4",
+                "flipped": false,
+                "num_correct": 1357
+            },
+            "3": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 1344
+            },
+            "4": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 1259
+            },
+            "5": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 973
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1364
+            },
+            "2": {
+                "thresh": "thresh_2",
+                "flipped": false,
+                "num_correct": 1188
+            },
+            "3": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 690
+            },
+            "4": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 642
+            },
+            "5": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 626
+            }
+        }
+    },
+    {
+        "csv": "anchor_to_bottom_lip_top_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1438
+            },
+            "2": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 1294
+            },
+            "3": {
+                "thresh": "thresh_4",
+                "flipped": false,
+                "num_correct": 1204
+            },
+            "4": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 1062
+            },
+            "5": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 792
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1267
+            },
+            "2": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 908
+            },
+            "3": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 743
+            },
+            "4": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 695
+            },
+            "5": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 686
+            }
+        }
+    },
+    {
+        "csv": "aspect_ratio_bottom_lip_heigh_to_mouth_width_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_4",
+                "flipped": false,
+                "num_correct": 1452
+            },
+            "2": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1452
+            },
+            "3": {
+                "thresh": "thresh_3",
+                "flipped": false,
+                "num_correct": 1331
+            },
+            "4": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 1323
+            },
+            "5": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 734
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_2",
+                "flipped": false,
+                "num_correct": 1374
+            },
+            "2": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1361
+            },
+            "3": {
+                "thresh": "thresh_3",
+                "flipped": false,
+                "num_correct": 1164
+            },
+            "4": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 684
+            },
+            "5": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 636
+            }
+        }
+    },
+    {
+        "csv": "anchor_to_top_lip_top_center_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1454
+            },
+            "2": {
+                "thresh": "thresh_4",
+                "flipped": false,
+                "num_correct": 1407
+            },
+            "3": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 1281
+            },
+            "4": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 984
+            },
+            "5": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 579
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1241
+            },
+            "2": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 839
+            },
+            "3": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 758
+            },
+            "4": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 688
+            },
+            "5": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 654
+            }
+        }
+    },
+    {
+        "csv": "anchor_to_bottom_lip_bottom_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_4",
+                "flipped": false,
+                "num_correct": 1464
+            },
+            "2": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1454
+            },
+            "3": {
+                "thresh": "thresh_3",
+                "flipped": false,
+                "num_correct": 1393
+            },
+            "4": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 1279
+            },
+            "5": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 825
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1240
+            },
+            "2": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 800
+            },
+            "3": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 682
+            },
+            "4": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 657
+            },
+            "5": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 641
+            }
+        }
+    },
+    {
+        "csv": "anchor_to_bottom_lip_bottom_center_thresholds.csv",
+        "lips": {
+            "1": {
+                "thresh": "thresh_5",
+                "flipped": false,
+                "num_correct": 1460
+            },
+            "2": {
+                "thresh": "thresh_4",
+                "flipped": false,
+                "num_correct": 1447
+            },
+            "3": {
+                "thresh": "thresh_1",
+                "flipped": true,
+                "num_correct": 1300
+            },
+            "4": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 994
+            },
+            "5": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 538
+            }
+        },
+        "teeth": {
+            "1": {
+                "thresh": "thresh_1",
+                "flipped": false,
+                "num_correct": 1276
+            },
+            "2": {
+                "thresh": "thresh_3",
+                "flipped": true,
+                "num_correct": 807
+            },
+            "3": {
+                "thresh": "thresh_2",
+                "flipped": true,
+                "num_correct": 729
+            },
+            "4": {
+                "thresh": "thresh_5",
+                "flipped": true,
+                "num_correct": 676
+            },
+            "5": {
+                "thresh": "thresh_4",
+                "flipped": true,
+                "num_correct": 650
+            }
+        }
+    }
+]

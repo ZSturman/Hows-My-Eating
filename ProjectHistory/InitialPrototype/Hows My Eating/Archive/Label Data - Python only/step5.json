@@ -1,0 +1,1010 @@
+[
+    {
+        "frame": 1,
+        "timestamp": 0.03,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1,
+        "timestamp": 0.03,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1,
+        "timestamp": 0.03,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 29,
+        "timestamp": 0.97,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 29,
+        "timestamp": 0.97,
+        "teeth": "open",
+        "lips": "open",
+        "action": "other"
+    },
+    {
+        "frame": 29,
+        "timestamp": 0.97,
+        "teeth": "open",
+        "lips": "open",
+        "action": "bite"
+    },
+    {
+        "frame": 56,
+        "timestamp": 1.87,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "bite"
+    },
+    {
+        "frame": 65,
+        "timestamp": 2.17,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "bite"
+    },
+    {
+        "frame": 69,
+        "timestamp": 2.3,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "bite"
+    },
+    {
+        "frame": 76,
+        "timestamp": 2.53,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "bite"
+    },
+    {
+        "frame": 89,
+        "timestamp": 2.97,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "bite"
+    },
+    {
+        "frame": 66,
+        "timestamp": 2.2,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "bite"
+    },
+    {
+        "frame": 88,
+        "timestamp": 2.93,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 98,
+        "timestamp": 3.27,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 106,
+        "timestamp": 3.53,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 116,
+        "timestamp": 3.87,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 127,
+        "timestamp": 4.23,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 135,
+        "timestamp": 4.5,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 146,
+        "timestamp": 4.87,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 155,
+        "timestamp": 5.17,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 165,
+        "timestamp": 5.5,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 173,
+        "timestamp": 5.77,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 181,
+        "timestamp": 6.03,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 191,
+        "timestamp": 6.37,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 189,
+        "timestamp": 6.3,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 201,
+        "timestamp": 6.7,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 207,
+        "timestamp": 6.9,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 218,
+        "timestamp": 7.27,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 228,
+        "timestamp": 7.6,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 240,
+        "timestamp": 8.0,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 247,
+        "timestamp": 8.23,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 259,
+        "timestamp": 8.63,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 271,
+        "timestamp": 9.03,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 282,
+        "timestamp": 9.4,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 292,
+        "timestamp": 9.73,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 303,
+        "timestamp": 10.1,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 313,
+        "timestamp": 10.43,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 325,
+        "timestamp": 10.83,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 335,
+        "timestamp": 11.17,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 346,
+        "timestamp": 11.53,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 356,
+        "timestamp": 11.87,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 364,
+        "timestamp": 12.13,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 375,
+        "timestamp": 12.5,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 386,
+        "timestamp": 12.87,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 396,
+        "timestamp": 13.2,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 409,
+        "timestamp": 13.63,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 423,
+        "timestamp": 14.1,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 432,
+        "timestamp": 14.4,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 445,
+        "timestamp": 14.83,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 464,
+        "timestamp": 15.47,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 478,
+        "timestamp": 15.93,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 486,
+        "timestamp": 16.2,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 501,
+        "timestamp": 16.7,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 510,
+        "timestamp": 17.0,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 524,
+        "timestamp": 17.47,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 532,
+        "timestamp": 17.73,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 545,
+        "timestamp": 18.17,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 551,
+        "timestamp": 18.37,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 558,
+        "timestamp": 18.6,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 569,
+        "timestamp": 18.97,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 582,
+        "timestamp": 19.4,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 591,
+        "timestamp": 19.7,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 637,
+        "timestamp": 21.23,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 637,
+        "timestamp": 21.23,
+        "teeth": "open",
+        "lips": "open",
+        "action": "other"
+    },
+    {
+        "frame": 649,
+        "timestamp": 21.63,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 652,
+        "timestamp": 21.73,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 720,
+        "timestamp": 24.0,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "bite"
+    },
+    {
+        "frame": 720,
+        "timestamp": 24.0,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 721,
+        "timestamp": 24.03,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "bite"
+    },
+    {
+        "frame": 721,
+        "timestamp": 24.03,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "bite"
+    },
+    {
+        "frame": 721,
+        "timestamp": 24.03,
+        "teeth": "open",
+        "lips": "open",
+        "action": "bite"
+    },
+    {
+        "frame": 744,
+        "timestamp": 24.8,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "bite"
+    },
+    {
+        "frame": 751,
+        "timestamp": 25.03,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "bite"
+    },
+    {
+        "frame": 761,
+        "timestamp": 25.37,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 762,
+        "timestamp": 25.4,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 772,
+        "timestamp": 25.74,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 785,
+        "timestamp": 26.17,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 784,
+        "timestamp": 26.14,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 793,
+        "timestamp": 26.44,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 802,
+        "timestamp": 26.74,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 810,
+        "timestamp": 27.0,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 819,
+        "timestamp": 27.3,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 828,
+        "timestamp": 27.6,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 838,
+        "timestamp": 27.94,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 845,
+        "timestamp": 28.17,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 856,
+        "timestamp": 28.54,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 863,
+        "timestamp": 28.77,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 869,
+        "timestamp": 28.97,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 877,
+        "timestamp": 29.24,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 888,
+        "timestamp": 29.6,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 895,
+        "timestamp": 29.84,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 906,
+        "timestamp": 30.2,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 915,
+        "timestamp": 30.5,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 925,
+        "timestamp": 30.84,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 934,
+        "timestamp": 31.14,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 947,
+        "timestamp": 31.57,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 955,
+        "timestamp": 31.84,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 966,
+        "timestamp": 32.2,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 974,
+        "timestamp": 32.47,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 983,
+        "timestamp": 32.77,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 998,
+        "timestamp": 33.27,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1008,
+        "timestamp": 33.6,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1019,
+        "timestamp": 33.97,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1029,
+        "timestamp": 34.3,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1041,
+        "timestamp": 34.7,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1053,
+        "timestamp": 35.1,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1064,
+        "timestamp": 35.47,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1052,
+        "timestamp": 35.07,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1062,
+        "timestamp": 35.4,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1066,
+        "timestamp": 35.54,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1077,
+        "timestamp": 35.9,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1088,
+        "timestamp": 36.27,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1098,
+        "timestamp": 36.6,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1108,
+        "timestamp": 36.94,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1120,
+        "timestamp": 37.34,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1132,
+        "timestamp": 37.74,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1145,
+        "timestamp": 38.17,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1156,
+        "timestamp": 38.54,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1169,
+        "timestamp": 38.97,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1181,
+        "timestamp": 39.37,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1193,
+        "timestamp": 39.77,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1204,
+        "timestamp": 40.14,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1210,
+        "timestamp": 40.34,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "chew"
+    },
+    {
+        "frame": 1217,
+        "timestamp": 40.57,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1249,
+        "timestamp": 41.64,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1249,
+        "timestamp": 41.64,
+        "teeth": "open",
+        "lips": "open",
+        "action": "other"
+    },
+    {
+        "frame": 1263,
+        "timestamp": 42.1,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1265,
+        "timestamp": 42.17,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1297,
+        "timestamp": 43.24,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1297,
+        "timestamp": 43.24,
+        "teeth": "open",
+        "lips": "open",
+        "action": "other"
+    },
+    {
+        "frame": 1307,
+        "timestamp": 43.57,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1309,
+        "timestamp": 43.64,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1324,
+        "timestamp": 44.14,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1372,
+        "timestamp": 45.74,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1387,
+        "timestamp": 46.24,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1398,
+        "timestamp": 46.6,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1408,
+        "timestamp": 46.94,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1414,
+        "timestamp": 47.14,
+        "teeth": "open",
+        "lips": "open",
+        "action": "other"
+    },
+    {
+        "frame": 1431,
+        "timestamp": 47.7,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1437,
+        "timestamp": 47.9,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1463,
+        "timestamp": 48.77,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1463,
+        "timestamp": 48.77,
+        "teeth": "open",
+        "lips": "open",
+        "action": "other"
+    },
+    {
+        "frame": 1474,
+        "timestamp": 49.14,
+        "teeth": "open",
+        "lips": "closed",
+        "action": "other"
+    },
+    {
+        "frame": 1476,
+        "timestamp": 49.2,
+        "teeth": "closed",
+        "lips": "closed",
+        "action": "other"
+    }
+]

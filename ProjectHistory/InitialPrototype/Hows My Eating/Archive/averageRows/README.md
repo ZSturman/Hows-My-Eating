@@ -1,0 +1,1 @@
+run “ts.py” passing in the “myData” folder. In “myData/export” there should be you’re labelled data as well as a “not_chewing.json” file. 

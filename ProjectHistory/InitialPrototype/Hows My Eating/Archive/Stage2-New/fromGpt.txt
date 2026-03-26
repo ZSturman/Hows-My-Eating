@@ -1,0 +1,45 @@
+Files to Be Created
+
+	2.	/src/utils/projectJson.ts
+		•	checkProjectJson(appDataDirectoryPath?: string, customProjectJsonFilename?: string): Promise<{ messages: Logger[], projectJson: ProjectJson }>
+		•	updateProjectJson(projectDataJsons: ProjectDataJson[]): Promise<void>
+		•	createProjectJson(defaultProjectJson: ProjectJson, projectJsonFilename: string): Promise<void>
+	3.	/src/utils/importData.ts
+		•	importData(dataDirectory: string): Promise<void>
+		•	doesTheDirectoryContainMovAndJsonFile(dataDirectory: string): Promise<{ validated: boolean, jsonFiles: string[], movFiles: string[] }>
+		•	checkDataTypes(validatedData): Promise<{ motionData: MotionData[], movData: MovData, otherData: OtherData }>
+		•	checkIfDataIsSynced(motionData: MotionData[], movData: MovData): Promise<number>
+		•	createProjectDataJson(motionData: MotionData[], dataSync: number, movData: MovData, otherData: OtherData): Promise<ProjectDataJson>
+	4.	/src/utils/syncData.ts
+		•	manuallySyncData(): Promise<void>
+		•	checkIfDataIsSynced(motionData: MotionData[], movData: MovData): Promise<number>
+	5.	/src/utils/exportData.ts
+		•	checkThatLabelsHaveBeenAdded(): Promise<boolean>
+		•	saveTheCSVFileSomewhere(): Promise<void>
+	6.	/src/components/TimeLine.tsx
+		•	UI component for managing data labeling and synchronization.
+		•	Functions to render frames and handle user interactions for labeling.
+		•	Logic to buffer and save data before closing the app.
+	7.	/src/utils/csvHandler.ts
+		•	createCsvFiles(motionData: MotionData[], numberOfFrames: number, movLength: number): Promise<CSVData[]>
+		•	checkForCsv(): Promise<boolean>
+		•	convertMovToFrames(mov: MovData): Promise<Frame[]>
+	8.	/src/types/index.d.ts
+		•	Definitions of all the custom types, such as ProjectJson, ProjectDataJson, MotionData, MovData, CSVData, Labels, Frame, etc.
+	9.	/src/utils/logging.ts
+		•	Functions for logging:
+		•	logInfo(message: string): void
+		•	logError(message: string): void
+		•	logWarning(message: string): void
+		•	logSuccess(message: string): void
+
+Rust Functions to Be Created
+
+Since the goal is to minimize Rust code, the Rust functions will handle only essential tasks that require native system access or are more performant in Rust:
+
+	1.	getAppDataDir(): Retrieves the app’s data directory path.
+	2.	exists(filePath: string): Checks if a file or directory exists at the specified path.
+	3.	readFile(filePath: string): Reads the contents of a file at the given path.
+	4.	writeFile(filePath: string, data: string): Writes data to a file at the specified path.
+	5.	selectDirectory(): Opens a native file picker to select a directory and returns the path.
+	6.	promptUserSelection(options: string[], message: string): Displays a prompt to the user to select from a list of options.

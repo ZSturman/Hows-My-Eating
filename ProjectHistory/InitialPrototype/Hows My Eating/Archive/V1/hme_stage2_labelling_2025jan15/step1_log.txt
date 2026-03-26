@@ -1,0 +1,5 @@
+2025-01-21 06:52:44,715 - INFO - Processing started for /Users/zacharysturman/Downloads/2024Sep25-181806
+2025-01-21 06:52:44,995 - INFO - Video info: {'video_path': '/Users/zacharysturman/Downloads/2024Sep25-181806/2024Sep25-181806.mov', 'duration': 46.168345, 'width': 1920, 'height': 1080, 'fps': 30.0, 'total_frames': 1385}
+2025-01-21 06:52:44,995 - INFO - Video info saved to /Users/zacharysturman/Downloads/2024Sep25-181806/mov_info_[2025jan21-065244].json
+2025-01-21 06:52:44,995 - INFO - Processing completed. Results: {'mov_info': '/Users/zacharysturman/Downloads/2024Sep25-181806/mov_info_[2025jan21-065244].json', 'mov_info_file+path': '/Users/zacharysturman/Downloads/2024Sep25-181806/mov_info_[2025jan21-065244].json'}
+2025-01-21 06:52:44,995 - INFO - Processing completed. Results: {'mov_info': '/Users/zacharysturman/Downloads/2024Sep25-181806/mov_info_[2025jan21-065244].json', 'mov_info_file+path': '/Users/zacharysturman/Downloads/2024Sep25-181806/mov_info_[2025jan21-065244].json'}

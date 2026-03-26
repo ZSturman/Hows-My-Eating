@@ -1,0 +1,15 @@
+# config.yaml
+
+thresholds:
+  mouth_opening_threshold: 2.0  # Adjust based on your data
+  mouth_closing_threshold: -2.0
+  chin_movement_threshold: 1.5
+  jaw_width_threshold: 1.0
+  ratio_of_length_to_width_ratio_of_mouth: 1.0
+
+chew_detection:
+  minimum_chew_distance: 5  # Minimum frames between chews
+
+logging:
+  level: INFO
+  filename: app.log

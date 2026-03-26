@@ -1,0 +1,12 @@
+mean_accel_mag
+var_accel_mag
+rms_accel_mag
+mean_gyro_mag
+rms_gyro_mag
+rms_jerk
+zcr_accel_mag
+chew_bandpower_1_3hz
+bandpower_0_8_1_5hz
+bandpower_2_4hz
+spectral_centroid
+spectral_rolloff_0_85

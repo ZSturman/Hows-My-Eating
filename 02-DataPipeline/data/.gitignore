@@ -1,0 +1,19 @@
+# Ignore user data (personal recordings)
+user/raw_sessions/
+!user/README.md
+!user/.gitkeep
+
+# Ignore derived outputs (all generated artifacts)
+derived/transformed/
+derived/features/
+derived/splits/
+derived/logs/
+!derived/README.md
+!derived/.gitkeep
+
+# Ignore video files everywhere (too large)
+*.mov
+*.mp4
+
+# Ignore macOS files
+.DS_Store
