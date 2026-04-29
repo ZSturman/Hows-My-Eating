@@ -13,14 +13,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from .train import ChewNet
 from .features import FEATURE_NAMES
-
-try:
-    import coremltools as ct
-    COREML_AVAILABLE = True
-except ImportError:
-    COREML_AVAILABLE = False
+from .train import ChewNet
 
 
 def export_coreml(
@@ -39,11 +33,13 @@ def export_coreml(
     Returns:
         Path to the exported model
     """
-    if not COREML_AVAILABLE:
+    try:
+        import coremltools as ct
+    except BaseException as exc:
         raise RuntimeError(
             "coremltools is required for CoreML export.\n"
             "Install with: pip install coremltools"
-        )
+        ) from exc
     
     model_path = Path(model_path)
     output_path = Path(output_path)
@@ -106,6 +102,7 @@ def export_normalization_json(
     ckpt = torch.load(model_path, map_location="cpu", weights_only=False)
     
     data = {
+        "model_id": ckpt.get("model_id"),
         "feature_mean": ckpt["mean"].tolist(),
         "feature_std": ckpt["std"].tolist(),
         "feature_names": FEATURE_NAMES,
@@ -149,6 +146,7 @@ def generate_swift_constants(
     model_path: Path,
     output_path: Path,
     runtime_config: Optional[dict] = None,
+    model_id: Optional[str] = None,
 ) -> Path:
     """
     Generate Swift normalization constants from trained model.
@@ -175,6 +173,7 @@ def generate_swift_constants(
     num_outputs = ckpt.get("num_outputs", 1)
     mode = ckpt.get("mode", "binary")
     label_names = ckpt.get("label_names", [])
+    model_id = model_id or ckpt.get("model_id") or "unknown"
     
     # Get W&B info for traceability
     wandb_run_id = ckpt.get("wandb_run_id")
@@ -228,13 +227,20 @@ struct NormalizationConstants {
     swift_code += f"    static let NUM_OUTPUTS: Int = {num_outputs}\n\n"
     swift_code += f"    /// Model mode: \"binary\" or \"mouth_shape\"\n"
     swift_code += f'    static let MODE: String = "{mode}"\n\n'
+    swift_code += f"    /// Local model registry id\n"
+    swift_code += f'    static let MODEL_ID: String = "{model_id}"\n\n'
+    swift_code += f"    /// Dataset hash used for training, when available\n"
+    swift_code += f'    static let DATASET_HASH: String = "{dataset_hash or ""}"\n\n'
+    swift_code += f"    /// W&B run metadata, when available\n"
+    swift_code += f'    static let WANDB_RUN_ID: String = "{wandb_run_id or ""}"\n'
+    swift_code += f'    static let WANDB_RUN_URL: String = "{wandb_run_url or ""}"\n\n'
     
     if mode == "mouth_shape" and label_names:
         swift_code += "    /// Output parameter names (order matches model output)\n"
         names_swift = ', '.join(f'"{n}"' for n in label_names)
         swift_code += f"    static let OUTPUT_NAMES: [String] = [{names_swift}]\n\n"
     
-    swift_code += '''    /// Normalize features using training statistics
+    swift_code += r'''    /// Normalize features using training statistics
     /// - Parameter features: Raw feature vector (12 elements)
     /// - Returns: Normalized feature vector
     static func normalize(_ features: [Double]) -> [Double] {

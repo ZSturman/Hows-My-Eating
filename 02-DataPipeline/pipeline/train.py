@@ -8,6 +8,8 @@ and config management.
 from __future__ import annotations
 
 import hashlib
+import json
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 
@@ -64,6 +66,7 @@ def train_model(
     config: PipelineConfig,
     dataset_hash: Optional[str] = None,
     data_source: str = "unknown",
+    split_manifest_path: Optional[Path] = None,
 ) -> dict[str, Any]:
     """
     Train ChewNet model on precomputed features.
@@ -132,16 +135,48 @@ def train_model(
         wandb_run_url = wandb.run.get_url()
         print(f"W&B run: {wandb_run_url}")
     
-    # Train/val split
-    n_val = int(n_samples * tc.val_ratio)
-    n_train = n_samples - n_val
-    
-    indices = np.random.permutation(n_samples)
-    X = X[indices]
-    y = y[indices]
-    
-    X_train, X_val = X[:n_train], X[n_train:]
-    y_train, y_val = y[:n_train], y[n_train:]
+    # Train/val split. Prefer locked session splits when available.
+    split_name = "random_row_split"
+    split_train_sessions: list[str] = []
+    split_val_sessions: list[str] = []
+
+    X_train: np.ndarray
+    X_val: np.ndarray
+    y_train: np.ndarray
+    y_val: np.ndarray
+
+    if split_manifest_path and (features_dir / "session_ids.npy").exists():
+        with open(split_manifest_path, "r") as f:
+            split_manifest = json.load(f)
+        splits = split_manifest.get("splits", {})
+        train_sessions = set(splits.get("train", []))
+        val_sessions = set(splits.get("validation_locked", []))
+        session_ids = np.load(features_dir / "session_ids.npy", allow_pickle=True).astype(str)
+        train_idx = np.flatnonzero(np.isin(session_ids, list(train_sessions)))
+        val_idx = np.flatnonzero(np.isin(session_ids, list(val_sessions)))
+
+        if len(train_idx) > 0 and len(val_idx) > 0:
+            train_idx = np.random.permutation(train_idx)
+            X_train, X_val = X[train_idx], X[val_idx]
+            y_train, y_val = y[train_idx], y[val_idx]
+            split_name = "locked_session_split"
+            split_train_sessions = sorted(train_sessions)
+            split_val_sessions = sorted(val_sessions)
+        else:
+            print("Locked split unavailable or empty; falling back to random row split.")
+            split_manifest_path = None
+
+    if not split_manifest_path or split_name == "random_row_split":
+        n_val = int(n_samples * tc.val_ratio)
+        n_train = n_samples - n_val
+        indices = np.random.permutation(n_samples)
+        X = X[indices]
+        y = y[indices]
+        X_train, X_val = X[:n_train], X[n_train:]
+        y_train, y_val = y[:n_train], y[n_train:]
+
+    n_train = len(X_train)
+    n_val = len(X_val)
     
     # Normalization (from training data only)
     mean = X_train.mean(axis=0)
@@ -235,8 +270,11 @@ def train_model(
     if best_state is None:
         best_state = model.state_dict()
     
+    model_id = f"chewnet-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}-{dataset_hash[:8]}"
+
     # Save checkpoint with all metadata
     checkpoint = {
+        "model_id": model_id,
         "model_state_dict": best_state,
         "input_dim": input_dim,
         "hidden_dim": tc.hidden_dim,
@@ -246,6 +284,11 @@ def train_model(
         "best_val_loss": float(best_val_loss),
         "dataset_hash": dataset_hash,
         "config": config.to_dict(),
+        "data_source": data_source,
+        "split_name": split_name,
+        "split_manifest_path": str(split_manifest_path) if split_manifest_path else None,
+        "split_train_sessions": split_train_sessions,
+        "split_validation_sessions": split_val_sessions,
     }
     
     if use_mouth_shape:
@@ -262,6 +305,7 @@ def train_model(
     
     torch.save(checkpoint, output_path)
     print(f"Saved model to: {output_path}")
+    print(f"Model ID: {model_id}")
     print(f"Best val loss: {best_val_loss:.4f}")
     
     # Log to W&B
@@ -273,6 +317,8 @@ def train_model(
             metadata={
                 "best_val_loss": best_val_loss,
                 "dataset_hash": dataset_hash,
+                "model_id": model_id,
+                "split_name": split_name,
             },
         )
         artifact.add_file(str(output_path))
@@ -285,6 +331,7 @@ def train_model(
     
     return {
         "output_path": output_path,
+        "model_id": model_id,
         "best_val_loss": best_val_loss,
         "final_epoch": epoch,
         "wandb_run_id": wandb_run_id,

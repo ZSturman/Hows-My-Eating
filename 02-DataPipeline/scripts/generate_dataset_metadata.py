@@ -25,9 +25,9 @@ def parse_session_name(folder_name: str) -> tuple[str, str]:
         "Not-eating-20251203-061305" -> ("Not-eating", "2025-12-03 06:13:05")
     """
     parts = folder_name.split('-')
-    if len(parts) >= 4:
+    if len(parts) >= 3:
         label = parts[0]  # "Eating" or "Not"
-        if label == "Not" and len(parts) >= 5:
+        if label == "Not" and len(parts) >= 4:
             label = f"{parts[0]}-{parts[1]}"  # "Not-eating"
             date_str = parts[2]
             time_str = parts[3]

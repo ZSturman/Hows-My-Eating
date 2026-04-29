@@ -32,10 +32,11 @@ This repository is organized into **5 lifecycle stages** representing the comple
 ```
 ChewSense/
 ├── 01-DataCollection/          ✅ COMPLETE - iOS app for data gathering
-├── 02-DataPipeline/             ✅ COMPLETE - Transform, train, export with W&B
+├── 02-DataPipeline/             🚧 ACTIVE - Transform, train, evaluate, registry, deploy
 ├── 03-ModelEvaluation/          ✅ COMPLETE - Offline metrics and analysis
-├── 04-RealWorldTesting/         🚧 IN PROGRESS - iOS/macOS inference app
+├── 04-RealWorldTesting/         🚧 ACTIVE - Canonical iOS/macOS inference + field-test logging
 ├── 05-FutureStages/             📋 PLANNED - Hierarchical analysis roadmap
+├── docs/                        📚 WORKFLOWS - Organization and model iteration guides
 └── ProjectHistory/              📚 ARCHIVE - Development evolution
 ```
 
@@ -86,6 +87,14 @@ python scripts/generate_swift_constants.py
 
 See [`02-DataPipeline/README.md`](02-DataPipeline/README.md) for advanced configuration.
 
+**New modular CLI**:
+```bash
+python main_new.py sample --no-wandb
+python main_new.py evaluate --model models/chewnet.pth
+python main_new.py from-field-test --input data/user/field_tests
+python main_new.py registry --latest
+```
+
 ---
 
 ### Stage 3: Evaluate Performance
@@ -115,12 +124,18 @@ Generates:
 2. Build and run
 3. Live detection on macOS
 
-The app displays:
+The canonical app is `ChewSenseDebuggingModel`. It displays:
 - Real-time chewing probability
 - Smoothed state (idle/chewing)
-- Exportable logs for analysis
+- False-positive, missed-chew, and correct feedback controls
+- Exportable field-test session bundles for retraining
 
 See [`04-RealWorldTesting/README.md`](04-RealWorldTesting/README.md) for details.
+
+For the full improvement loop, see:
+- [`docs/PROJECT_ORGANIZATION.md`](docs/PROJECT_ORGANIZATION.md)
+- [`docs/MODEL_ITERATION_WORKFLOW.md`](docs/MODEL_ITERATION_WORKFLOW.md)
+- [`docs/REAL_WORLD_TEST_PROTOCOL.md`](docs/REAL_WORLD_TEST_PROTOCOL.md)
 
 ---
 
@@ -138,15 +153,16 @@ See [`04-RealWorldTesting/README.md`](04-RealWorldTesting/README.md) for details
 | **CoreML Export** | ✅ Complete | Deployable iOS/macOS model |
 | **Real-Time Detection** | ✅ Complete | Live binary chewing classification |
 | **State Machine** | ✅ Complete | Hysteresis-based episode detection |
+| **Field-Test Import** | ✅ Added | App feedback windows can become curated sessions |
+| **Local Model Registry** | ✅ Added | Model id, manifests, metrics, constants |
 
 ### 🚧 In Progress
 
 | Feature | Status | Timeline |
 |---------|--------|----------|
-| **FFT Features in Swift** | 🚧 Simplified | Approximate bandpower/spectral features |
-| **macOS Support** | 🚧 Partial | Requires Mac Catalyst enablement |
-| **Model Deployment** | 🚧 Manual | Auto-deploy script in development |
-| **Runtime Config UI** | 🚧 TODO | Adjustable threshold sliders |
+| **Real-world accuracy tuning** | 🚧 Active | Needs repeated app tests and retraining |
+| **Locked split discipline** | 🚧 Active | Split manifests added; more regression data needed |
+| **Device validation** | 🚧 Active | Requires physical iPhone/Mac + AirPods test passes |
 
 ### 📋 Planned Future Stages
 
@@ -269,10 +285,12 @@ All detection parameters are exposed via CLI for experimentation:
 
 ## 📚 Dataset
 
-**Current dataset**: 24 sessions (~1 hour total)
+**Current tracked dataset**: 24 sessions (~1 hour total)
 - 7 eating sessions
 - 17 not-eating sessions
 - All AirPods Pro motion data + labels
+
+New personal recordings and field-test bundles should go under `02-DataPipeline/data/user/` and remain git-ignored. Reviewed imports go under `02-DataPipeline/data/curated/`.
 
 **Format**:
 - CSV: `timestamp, ax, ay, az, gx, gy, gz, label`
@@ -366,12 +384,12 @@ See [`ProjectHistory/README.md`](ProjectHistory/README.md) for the evolution of 
 | Stage | Status | Completion |
 |-------|--------|------------|
 | **01-DataCollection** | ✅ Complete | 100% |
-| **02-DataPipeline** | ✅ Complete | 100% |
+| **02-DataPipeline** | 🚧 Active | 90% |
 | **03-ModelEvaluation** | ✅ Complete | 100% |
-| **04-RealWorldTesting** | 🚧 In Progress | 85% |
+| **04-RealWorldTesting** | 🚧 Active | 90% |
 | **05-BiteSegmentation** | 📋 Planned | 0% |
 | **06-MealStructure** | 📋 Planned | 0% |
 | **07-QualityEvaluation** | 📋 Planned | 0% |
 | **08-RealtimeFeedback** | 📋 Planned | 0% |
 
-**Last Updated**: January 5, 2026
+**Last Updated**: April 28, 2026

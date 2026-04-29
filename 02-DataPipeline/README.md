@@ -233,11 +233,20 @@ python main_new.py sample
 # Full pipeline from data exported from iOS app
 python main_new.py from-app
 
+# Import real-world app feedback bundles and retrain from curated sessions
+python main_new.py from-field-test --input data/user/field_tests
+
 # Full pipeline from raw CSV files
-python main_new.py from-raw --input-dir data/raw_sessions
+python main_new.py from-raw --input data/raw_sessions
 
 # Resume from existing feature files
 python main_new.py from-features
+
+# Evaluate a trained model from CLI
+python main_new.py evaluate --model models/chewnet.pth
+
+# Show latest local model registry entry
+python main_new.py registry --latest
 
 # Deploy model to Xcode project
 python main_new.py deploy
@@ -249,8 +258,11 @@ python main_new.py deploy
 |---------|-------------|
 | `sample` | Run pipeline using sample data in `data/sample/` |
 | `from-app` | Process data exported from ChewSense Data Collection app |
+| `from-field-test` | Convert real-world app feedback bundles into curated sessions |
 | `from-raw` | Process raw CSV files from specified directory |
 | `from-features` | Skip extraction, train from existing `X.npy`/`y.npy` |
+| `evaluate` | Evaluate a checkpoint with optional locked split filtering |
+| `registry` | Inspect local model registry entries |
 | `deploy` | Copy model + constants to Xcode project |
 
 ### Configuration File
@@ -267,13 +279,43 @@ Default configuration: [`config/defaults.yaml`](config/defaults.yaml)
 ```
 data/
 ├── sample/      # Sample CSVs (git-tracked, for demos)
-├── user/        # User data (git-ignored)
+├── user/        # Raw user data and field-test bundles (git-ignored)
+├── curated/     # Reviewed/imported sessions (git-ignored except docs)
+├── manifests/   # Dataset and locked split manifests
 └── derived/     # Pipeline outputs (git-ignored)
     ├── transformed/
     ├── features/
     ├── models/
     └── exports/
 ```
+
+### Real-World Feedback Loop
+
+The canonical testing app exports field-test bundles containing:
+
+- `session_metadata.json`
+- `motion.csv`
+- `predictions.csv`
+- `feedback.csv`
+- `config.json` when available
+
+Place exported bundles in `data/user/field_tests/`, then run:
+
+```bash
+python main_new.py from-field-test --input data/user/field_tests
+```
+
+The importer converts each feedback window into a labeled curated session under `data/curated/accepted_sessions/`. False positives become not-chewing labels; missed chews become chewing labels.
+
+### Local Model Registry
+
+Training commands create entries in:
+
+```text
+model_registry/runs/<model_id>/
+```
+
+Each entry stores the checkpoint, metrics, manifests, runtime config, normalization JSON, and generated Swift constants. CoreML packages are copied into the entry when export succeeds.
 
 ---
 

@@ -1,13 +1,30 @@
 # Ignore user data (personal recordings)
 user/raw_sessions/
+user/field_tests/
 !user/README.md
 !user/.gitkeep
+
+# Ignore curated session contents (reviewed but still personal data)
+curated/accepted_sessions/*
+curated/rejected_sessions/*
+!curated/README.md
+!curated/accepted_sessions/.gitkeep
+!curated/rejected_sessions/.gitkeep
+
+# Ignore generated run manifests by default
+manifests/datasets/*.json
+manifests/splits/*.json
+!manifests/README.md
+!manifests/datasets/.gitkeep
+!manifests/splits/.gitkeep
 
 # Ignore derived outputs (all generated artifacts)
 derived/transformed/
 derived/features/
+derived/models/
 derived/splits/
 derived/logs/
+derived/runs/
 !derived/README.md
 !derived/.gitkeep
 

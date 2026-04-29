@@ -5,8 +5,8 @@ This dataset contains motion sensor data collected from AirPods for chewing dete
 ## Dataset Statistics
 
 - **Total Sessions**: 24
-- **Eating Sessions**: 0
-- **Not-Eating Sessions**: 24
+- **Eating Sessions**: 7
+- **Not-Eating Sessions**: 17
 - **Total Duration**: 0.99 hours
 - **Total Samples**: 176,880
 
@@ -69,10 +69,11 @@ Each CSV file contains the following columns:
 ## Usage
 
 To add new data:
-1. Use the ChewSense Data Collection app to record sessions
-2. Export sessions and place in `data/raw_sessions/`
-3. Run `python main.py` to process and transform new data
-4. Regenerate this file with: `python scripts/generate_dataset_metadata.py`
+1. Use the ChewSense Data Collection app to record controlled labeled sessions, or the real-world testing app to collect field-test bundles.
+2. Place controlled sessions in `data/user/raw_sessions/`.
+3. Place field-test bundles in `data/user/field_tests/`.
+4. Run `python main_new.py from-raw --input data/user/raw_sessions` or `python main_new.py from-field-test --input data/user/field_tests`.
+5. Regenerate this file with: `python scripts/generate_dataset_metadata.py`.
 
 ---
 

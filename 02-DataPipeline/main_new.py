@@ -5,11 +5,11 @@ ChewSense Pipeline CLI
 A modular, composable pipeline for chewing detection model development.
 
 Usage:
-    python main.py sample          # Run with sample data (demo/testing)
-    python main.py from-app        # Guide for collecting your own data
-    python main.py from-raw        # Process raw labeled CSVs
-    python main.py from-features   # Train from pre-extracted features
-    python main.py deploy          # Deploy model to Xcode project
+    python main_new.py sample          # Run with sample data (demo/testing)
+    python main_new.py from-app        # Guide for collecting your own data
+    python main_new.py from-raw        # Process raw labeled CSVs
+    python main_new.py from-features   # Train from pre-extracted features
+    python main_new.py deploy          # Deploy model to Xcode project
 
 Each command supports --help for detailed options.
 """
@@ -17,7 +17,9 @@ Each command supports --help for detailed options.
 from __future__ import annotations
 
 import argparse
+import json
 import sys
+from datetime import datetime
 from pathlib import Path
 
 # Ensure pipeline module is importable
@@ -29,8 +31,9 @@ from pipeline.transform import transform_directory
 from pipeline.features import extract_features_directory
 from pipeline.train import train_model
 from pipeline.evaluate import evaluate_model
-from pipeline.export import export_coreml, export_normalization_json, generate_swift_constants
-from pipeline.deploy import deploy_to_app
+from pipeline.field_tests import import_field_test_bundles
+from pipeline.registry import latest_registry_entry, register_model
+from pipeline.splits import create_or_update_split_manifest
 
 
 def get_repo_root() -> Path:
@@ -64,6 +67,8 @@ def add_common_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--alpha", type=float, help="EMA smoothing factor")
     parser.add_argument("--high-threshold", type=float, help="Chewing start threshold")
     parser.add_argument("--low-threshold", type=float, help="Chewing end threshold")
+    parser.add_argument("--min-start-windows", type=int, help="Windows to confirm chewing start")
+    parser.add_argument("--min-end-windows", type=int, help="Windows to confirm chewing end")
 
 
 def load_and_merge_config(args: argparse.Namespace) -> PipelineConfig:
@@ -85,6 +90,8 @@ def load_and_merge_config(args: argparse.Namespace) -> PipelineConfig:
         "alpha": args.alpha if hasattr(args, "alpha") else None,
         "high_threshold": getattr(args, "high_threshold", None),
         "low_threshold": getattr(args, "low_threshold", None),
+        "min_start_windows": getattr(args, "min_start_windows", None),
+        "min_end_windows": getattr(args, "min_end_windows", None),
     }
     
     return merge_cli_args(config, args_dict)
@@ -92,6 +99,8 @@ def load_and_merge_config(args: argparse.Namespace) -> PipelineConfig:
 
 def prompt_yes_no(prompt: str, default: bool = True) -> bool:
     """Prompt user for yes/no confirmation."""
+    if not sys.stdin.isatty():
+        return default
     suffix = " [Y/n]: " if default else " [y/N]: "
     while True:
         ans = input(prompt + suffix).strip().lower()
@@ -102,6 +111,92 @@ def prompt_yes_no(prompt: str, default: bool = True) -> bool:
         if ans in ("n", "no"):
             return False
         print("Please enter 'y' or 'n'.")
+
+
+def default_split_manifest_path(pipeline_root: Path) -> Path:
+    return pipeline_root / "data" / "manifests" / "splits" / "locked_splits.json"
+
+
+def dataset_manifest_path(pipeline_root: Path, label: str) -> Path:
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    safe_label = label.replace("/", "-").replace(" ", "-")
+    return pipeline_root / "data" / "manifests" / "datasets" / f"{safe_label}_{stamp}.json"
+
+
+def make_run_workspace(pipeline_root: Path, label: str) -> tuple[Path, Path, Path]:
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    safe_label = label.replace("/", "-").replace(" ", "-")
+    run_dir = pipeline_root / "data" / "derived" / "runs" / f"{safe_label}_{stamp}"
+    transformed_dir = run_dir / "transformed"
+    features_dir = run_dir / "features"
+    run_dir.mkdir(parents=True, exist_ok=True)
+    return run_dir, transformed_dir, features_dir
+
+
+def latest_features_dir(pipeline_root: Path) -> Path:
+    runs_dir = pipeline_root / "data" / "derived" / "runs"
+    candidates = [
+        path for path in runs_dir.glob("*/features")
+        if (path / "X.npy").exists() and (path / "y.npy").exists()
+    ]
+    if candidates:
+        return max(candidates, key=lambda path: path.stat().st_mtime)
+
+    legacy_dir = pipeline_root / "data" / "derived" / "features"
+    if (legacy_dir / "X.npy").exists() and (legacy_dir / "y.npy").exists():
+        return legacy_dir
+    return legacy_dir
+
+
+def save_metrics(metrics: dict, pipeline_root: Path, label: str) -> Path:
+    out = pipeline_root / "data" / "derived" / "logs" / f"{label}_metrics.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with open(out, "w") as f:
+        json.dump(metrics, f, indent=2)
+    return out
+
+
+def lazy_deploy_to_app(*args, **kwargs):
+    from pipeline.deploy import deploy_to_app
+
+    return deploy_to_app(*args, **kwargs)
+
+
+def lazy_export_coreml(*args, **kwargs):
+    from pipeline.export import export_coreml
+
+    return export_coreml(*args, **kwargs)
+
+
+def lazy_export_normalization_json(*args, **kwargs):
+    from pipeline.export import export_normalization_json
+
+    return export_normalization_json(*args, **kwargs)
+
+
+def lazy_generate_swift_constants(*args, **kwargs):
+    from pipeline.export import generate_swift_constants
+
+    return generate_swift_constants(*args, **kwargs)
+
+
+def evaluate_with_locked_validation(
+    features_dir: Path,
+    model_path: Path,
+    config: PipelineConfig,
+    split_path: Path,
+) -> dict:
+    try:
+        return evaluate_model(
+            features_dir,
+            model_path,
+            config,
+            split_manifest_path=split_path,
+            split_name="validation_locked",
+        )
+    except ValueError as exc:
+        print(f"Validation split unavailable ({exc}); evaluating all rows instead.")
+        return evaluate_model(features_dir, model_path, config)
 
 
 # =============================================================================
@@ -119,10 +214,9 @@ def cmd_sample(args: argparse.Namespace) -> int:
     
     # Paths for sample workflow
     sample_dir = pipeline_root / "data" / "sample"
-    derived_dir = pipeline_root / "data" / "derived"
-    transformed_dir = derived_dir / "transformed"
-    features_dir = derived_dir / "features"
-    model_path = pipeline_root / "models" / "chewnet.pth"
+    run_dir, transformed_dir, features_dir = make_run_workspace(pipeline_root, "sample")
+    model_path = pipeline_root / "data" / "derived" / "models" / "chewnet_sample.pth"
+    print(f"   Run workspace: {run_dir}")
     
     # Check sample data exists
     if not sample_dir.exists() or not list(sample_dir.glob("*/*.csv")):
@@ -136,6 +230,10 @@ def cmd_sample(args: argparse.Namespace) -> int:
     manifest = create_manifest(sessions)
     print(f"   Found {len(sessions)} sessions")
     print(f"   Dataset hash: {manifest.dataset_hash}")
+    manifest_path = dataset_manifest_path(pipeline_root, "sample")
+    save_manifest(manifest, manifest_path)
+    split_path = default_split_manifest_path(pipeline_root)
+    split_manifest = create_or_update_split_manifest(sessions, split_path)
     
     # 2. Transform
     print("\n🔄 Step 2: Transforming (adding soft labels)...")
@@ -162,20 +260,35 @@ def cmd_sample(args: argparse.Namespace) -> int:
             config=config,
             dataset_hash=manifest.dataset_hash,
             data_source="sample",
+            split_manifest_path=split_path,
         )
         
         # 5. Evaluate
+        metrics = None
         if prompt_yes_no("\n📈 Evaluate model?"):
-            evaluate_model(features_dir, model_path, config)
+            metrics = evaluate_with_locked_validation(features_dir, model_path, config, split_path)
+            save_metrics(metrics, pipeline_root, "sample")
+
+        registry_dir = register_model(
+            model_path=model_path,
+            repo_root=repo_root,
+            config=config,
+            dataset_manifest=manifest_path,
+            split_manifest=split_manifest,
+            metrics=metrics,
+            model_id=result.get("model_id"),
+        )
+        print(f"   Registry entry: {registry_dir}")
         
         # 6. Export
-        if prompt_yes_no("\n📦 Export to CoreML?"):
+        if prompt_yes_no("\n📦 Export to CoreML?", default=False):
             exports_dir = pipeline_root / "exports"
-            export_coreml(model_path, exports_dir / "ChewNet.mlpackage")
-            export_normalization_json(model_path, exports_dir / "chewnet_norm.json")
-            generate_swift_constants(
+            lazy_export_coreml(model_path, exports_dir / "ChewNet.mlpackage")
+            lazy_export_normalization_json(model_path, exports_dir / "chewnet_norm.json")
+            lazy_generate_swift_constants(
                 model_path,
                 exports_dir / "NormalizationConstants.swift",
+                model_id=result.get("model_id"),
             )
     
     print("\n✅ Sample pipeline complete!")
@@ -240,7 +353,7 @@ STEP 6: Run Pipeline
 --------------------
 Once data is in place, run:
 
-    python main.py from-raw --input data/user/raw_sessions
+    python main_new.py from-raw --input data/user/raw_sessions
 
 This will validate, transform, extract features, and train a model.
 """)
@@ -272,10 +385,9 @@ def cmd_from_raw(args: argparse.Namespace) -> int:
         print(f"\n❌ Input directory not found: {input_dir}")
         return 1
     
-    derived_dir = pipeline_root / "data" / "derived"
-    transformed_dir = derived_dir / "transformed"
-    features_dir = derived_dir / "features"
+    run_dir, transformed_dir, features_dir = make_run_workspace(pipeline_root, "from_raw")
     model_path = pipeline_root / "models" / "chewnet.pth"
+    print(f"   Run workspace: {run_dir}")
     
     # 1. Validate
     print(f"\n📋 Step 1: Validating data in {input_dir}...")
@@ -293,9 +405,10 @@ def cmd_from_raw(args: argparse.Namespace) -> int:
     print(f"   - Dataset hash: {manifest.dataset_hash}")
     
     # Save manifest
-    manifest_path = derived_dir / "logs" / "dataset_manifest.json"
-    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    manifest_path = dataset_manifest_path(pipeline_root, "from_raw")
     save_manifest(manifest, manifest_path)
+    split_path = default_split_manifest_path(pipeline_root)
+    split_manifest = create_or_update_split_manifest(sessions, split_path)
     
     # 2. Transform
     print("\n🔄 Step 2: Transforming (adding soft labels)...")
@@ -303,7 +416,6 @@ def cmd_from_raw(args: argparse.Namespace) -> int:
         input_dir=input_dir,
         output_dir=transformed_dir,
         config=config.soft_labels,
-        archive_dir=derived_dir / "archived_raw",
     )
     
     # 3. Extract features
@@ -322,13 +434,27 @@ def cmd_from_raw(args: argparse.Namespace) -> int:
             config=config,
             dataset_hash=manifest.dataset_hash,
             data_source="user",
+            split_manifest_path=split_path,
         )
         
+        metrics = None
         if prompt_yes_no("\n📈 Evaluate model?"):
-            evaluate_model(features_dir, model_path, config)
+            metrics = evaluate_with_locked_validation(features_dir, model_path, config, split_path)
+            save_metrics(metrics, pipeline_root, "from_raw")
+
+        registry_dir = register_model(
+            model_path=model_path,
+            repo_root=get_repo_root(),
+            config=config,
+            dataset_manifest=manifest_path,
+            split_manifest=split_manifest,
+            metrics=metrics,
+            model_id=result.get("model_id"),
+        )
+        print(f"   Registry entry: {registry_dir}")
         
-        if prompt_yes_no("\n📦 Export and deploy to Xcode?"):
-            deploy_to_app(
+        if prompt_yes_no("\n📦 Export and deploy to Xcode?", default=False):
+            lazy_deploy_to_app(
                 model_path=model_path,
                 repo_root=get_repo_root(),
             )
@@ -349,7 +475,7 @@ def cmd_from_features(args: argparse.Namespace) -> int:
     config = load_and_merge_config(args)
     pipeline_root = Path(__file__).parent
     
-    features_dir = Path(args.input) if args.input else pipeline_root / "data" / "derived" / "features"
+    features_dir = Path(args.input) if args.input else latest_features_dir(pipeline_root)
     model_path = pipeline_root / "models" / "chewnet.pth"
     
     # Check features exist
@@ -359,7 +485,7 @@ def cmd_from_features(args: argparse.Namespace) -> int:
     if not x_path.exists() or not y_path.exists():
         print(f"\n❌ Feature files not found in: {features_dir}")
         print("   Expected: X.npy and y.npy")
-        print("\n   Run 'python main.py from-raw' to extract features first.")
+        print("\n   Run 'python main_new.py from-raw' to extract features first.")
         return 1
     
     print(f"\n📂 Features directory: {features_dir}")
@@ -372,11 +498,22 @@ def cmd_from_features(args: argparse.Namespace) -> int:
         data_source="user",
     )
     
+    metrics = None
     if prompt_yes_no("\n📈 Evaluate model?"):
-        evaluate_model(features_dir, model_path, config)
+        metrics = evaluate_model(features_dir, model_path, config)
+        save_metrics(metrics, pipeline_root, "from_features")
+
+    registry_dir = register_model(
+        model_path=model_path,
+        repo_root=get_repo_root(),
+        config=config,
+        metrics=metrics,
+        model_id=result.get("model_id"),
+    )
+    print(f"   Registry entry: {registry_dir}")
     
-    if prompt_yes_no("\n📦 Export and deploy to Xcode?"):
-        deploy_to_app(
+    if prompt_yes_no("\n📦 Export and deploy to Xcode?", default=False):
+        lazy_deploy_to_app(
             model_path=model_path,
             repo_root=get_repo_root(),
         )
@@ -399,15 +536,176 @@ def cmd_deploy(args: argparse.Namespace) -> int:
     
     if not model_path.exists():
         print(f"\n❌ Model not found: {model_path}")
-        print("   Train a model first with 'python main.py sample' or 'python main.py from-raw'")
+        print("   Train a model first with 'python main_new.py sample' or 'python main_new.py from-raw'")
         return 1
     
-    deploy_to_app(
+    lazy_deploy_to_app(
         model_path=model_path,
         repo_root=get_repo_root(),
         force=args.force,
     )
     
+    return 0
+
+
+# =============================================================================
+# COMMAND: from-field-test
+# =============================================================================
+
+def cmd_from_field_test(args: argparse.Namespace) -> int:
+    """Import real-world app field-test bundles and optionally retrain."""
+    print("\n🧭 Importing Field-Test Bundles")
+    print("=" * 50)
+
+    config = load_and_merge_config(args)
+    pipeline_root = Path(__file__).parent
+    repo_root = get_repo_root()
+
+    input_dir = Path(args.input) if args.input else pipeline_root / "data" / "user" / "field_tests"
+    curated_dir = Path(args.curated_dir) if args.curated_dir else pipeline_root / "data" / "curated" / "accepted_sessions"
+    manifest_dir = pipeline_root / "data" / "manifests" / "datasets"
+
+    if not input_dir.exists():
+        print(f"\n❌ Input directory not found: {input_dir}")
+        print("   Export field-test bundles from the app and place them here first.")
+        return 1
+
+    import_manifest = import_field_test_bundles(
+        input_dir=input_dir,
+        output_dir=curated_dir,
+        manifest_dir=manifest_dir,
+    )
+    print(f"   Bundles found: {import_manifest['bundles_found']}")
+    print(f"   Imported sessions: {import_manifest['imported_count']}")
+    print(f"   Import manifest: {import_manifest['manifest_path']}")
+
+    if import_manifest["imported_count"] == 0:
+        print("\nNo usable field-test windows were imported.")
+        return 0
+
+    if not prompt_yes_no("\n🎯 Train using curated accepted sessions?", default=True):
+        return 0
+
+    run_dir, transformed_dir, features_dir = make_run_workspace(pipeline_root, "from_field_test")
+    model_path = pipeline_root / "models" / "chewnet.pth"
+    print(f"   Run workspace: {run_dir}")
+
+    print(f"\n📋 Validating curated sessions in {curated_dir}...")
+    sessions = validate_sessions(curated_dir)
+    manifest = create_manifest(sessions)
+    manifest_path = dataset_manifest_path(pipeline_root, "from_field_test")
+    save_manifest(manifest, manifest_path)
+
+    field_regression_ids = [
+        item["session_id"] for item in import_manifest.get("imported_sessions", [])
+    ]
+    split_path = default_split_manifest_path(pipeline_root)
+    split_manifest = create_or_update_split_manifest(
+        sessions,
+        split_path,
+        field_regression_session_ids=field_regression_ids,
+    )
+
+    print("\n🔄 Transforming curated sessions...")
+    transform_directory(
+        input_dir=curated_dir,
+        output_dir=transformed_dir,
+        config=config.soft_labels,
+    )
+
+    print("\n📊 Extracting features...")
+    extract_features_directory(
+        input_dir=transformed_dir,
+        output_dir=features_dir,
+        config=config.features,
+    )
+
+    result = train_model(
+        features_dir=features_dir,
+        output_path=model_path,
+        config=config,
+        dataset_hash=manifest.dataset_hash,
+        data_source="field_test",
+        split_manifest_path=split_path,
+    )
+
+    metrics = evaluate_with_locked_validation(features_dir, model_path, config, split_path)
+    field_metrics = None
+    try:
+        field_metrics = evaluate_model(
+            features_dir,
+            model_path,
+            config,
+            split_manifest_path=split_path,
+            split_name="field_regression",
+        )
+    except ValueError:
+        pass
+
+    all_metrics = {"validation_locked": metrics, "field_regression": field_metrics}
+    save_metrics(all_metrics, pipeline_root, "from_field_test")
+    registry_dir = register_model(
+        model_path=model_path,
+        repo_root=repo_root,
+        config=config,
+        dataset_manifest=manifest_path,
+        split_manifest=split_manifest,
+        metrics=all_metrics,
+        model_id=result.get("model_id"),
+    )
+    print(f"   Registry entry: {registry_dir}")
+    print("\n✅ Field-test import and retraining complete!")
+    return 0
+
+
+# =============================================================================
+# COMMAND: evaluate
+# =============================================================================
+
+def cmd_evaluate(args: argparse.Namespace) -> int:
+    """Evaluate a trained model from the modular CLI."""
+    config = load_and_merge_config(args)
+    pipeline_root = Path(__file__).parent
+    model_path = Path(args.model) if args.model else pipeline_root / "models" / "chewnet.pth"
+    features_dir = Path(args.features) if args.features else latest_features_dir(pipeline_root)
+    split_path = Path(args.split_manifest) if args.split_manifest else default_split_manifest_path(pipeline_root)
+
+    metrics = evaluate_model(
+        features_dir=features_dir,
+        model_path=model_path,
+        config=config,
+        split_manifest_path=split_path if split_path.exists() else None,
+        split_name=args.split,
+    )
+
+    if args.output:
+        with open(args.output, "w") as f:
+            json.dump(metrics, f, indent=2)
+        print(f"\nSaved metrics: {args.output}")
+    return 0
+
+
+# =============================================================================
+# COMMAND: registry
+# =============================================================================
+
+def cmd_registry(args: argparse.Namespace) -> int:
+    """Inspect local model registry entries."""
+    repo_root = get_repo_root()
+    if args.latest:
+        entry = latest_registry_entry(repo_root)
+        if entry is None:
+            print("No model registry entries found.")
+            return 1
+        metadata_path = entry / "metadata.json"
+        print(f"Latest registry entry: {entry}")
+        if metadata_path.exists():
+            with open(metadata_path, "r") as f:
+                metadata = json.load(f)
+            print(json.dumps(metadata, indent=2))
+        return 0
+
+    print("Use --latest to show the newest registry entry.")
     return 0
 
 
@@ -421,10 +719,13 @@ def main() -> int:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python main.py sample              # Quick demo with sample data
-  python main.py from-app            # Collect your own data
-  python main.py from-raw --input data/user/raw_sessions
-  python main.py deploy --force      # Deploy model to Xcode
+  python main_new.py sample              # Quick demo with sample data
+  python main_new.py from-app            # Collect your own data
+  python main_new.py from-raw --input data/user/raw_sessions
+  python main_new.py from-field-test --input data/user/field_tests
+  python main_new.py evaluate --model models/chewnet.pth
+  python main_new.py registry --latest
+  python main_new.py deploy --force      # Deploy model to Xcode
         """,
     )
     
@@ -469,6 +770,48 @@ Examples:
     )
     add_common_args(p_from_features)
     p_from_features.set_defaults(func=cmd_from_features)
+
+    # from-field-test command
+    p_from_field_test = subparsers.add_parser(
+        "from-field-test",
+        help="Import real-world app feedback bundles and retrain from curated sessions",
+    )
+    p_from_field_test.add_argument(
+        "--input", type=Path,
+        help="Directory containing exported field-test bundles",
+    )
+    p_from_field_test.add_argument(
+        "--curated-dir", type=Path,
+        help="Directory to write imported curated sessions",
+    )
+    add_common_args(p_from_field_test)
+    p_from_field_test.set_defaults(func=cmd_from_field_test)
+
+    # evaluate command
+    p_evaluate = subparsers.add_parser(
+        "evaluate",
+        help="Evaluate a trained model from feature arrays",
+    )
+    p_evaluate.add_argument("--model", type=Path, help="Path to model checkpoint")
+    p_evaluate.add_argument("--features", type=Path, help="Directory containing X.npy/y.npy")
+    p_evaluate.add_argument(
+        "--split",
+        default="all",
+        choices=["all", "train", "validation_locked", "test_locked", "field_regression"],
+        help="Split to evaluate when session_ids.npy and a split manifest are available",
+    )
+    p_evaluate.add_argument("--split-manifest", type=Path, help="Path to split manifest")
+    p_evaluate.add_argument("--output", type=Path, help="Optional metrics JSON output")
+    add_common_args(p_evaluate)
+    p_evaluate.set_defaults(func=cmd_evaluate)
+
+    # registry command
+    p_registry = subparsers.add_parser(
+        "registry",
+        help="Inspect local model registry entries",
+    )
+    p_registry.add_argument("--latest", action="store_true", help="Show latest registry entry")
+    p_registry.set_defaults(func=cmd_registry)
     
     # deploy command
     p_deploy = subparsers.add_parser(
@@ -490,7 +833,7 @@ Examples:
     
     if args.command is None:
         parser.print_help()
-        print("\n💡 Quick start: python main.py sample")
+        print("\n💡 Quick start: python main_new.py sample")
         return 0
     
     return args.func(args)

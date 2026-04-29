@@ -108,6 +108,9 @@ logs/
 *.log
 IMPLEMENTATION_STATUS.md
 
+# ChewSense generated model registry
+02-DataPipeline/model_registry/runs/
+
 # Temporary files
 *.tmp
 *.temp

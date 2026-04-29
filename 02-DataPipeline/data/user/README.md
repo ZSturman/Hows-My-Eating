@@ -13,6 +13,7 @@ user/
 │   │   └── _metadata.txt
 │   └── Not-eating-20250101-130000/
 │       └── ...
+├── field_tests/           # Place real-world test-session bundles here
 └── README.md              # This file
 ```
 
@@ -44,8 +45,16 @@ python main.py from-raw --input data/user/raw_sessions
 # 5. Optionally export to CoreML
 ```
 
+For real-world app test bundles:
+
+```bash
+# Convert false positives/missed chews into curated training sessions
+python main_new.py from-field-test --input data/user/field_tests
+```
+
 ## Notes
 
 - Video files (`.mov`) are large and git-ignored. The pipeline only needs CSVs.
+- Field-test bundles should contain `session_metadata.json`, `motion.csv`, `predictions.csv`, and `feedback.csv`.
 - Keep a backup of your raw sessions before processing.
 - Processed CSVs will be moved to `data/derived/` after transformation.

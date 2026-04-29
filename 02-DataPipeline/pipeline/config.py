@@ -165,9 +165,15 @@ def load_config(config_path: Optional[Path] = None) -> PipelineConfig:
     wandb = WandbConfig(**data.get("wandb", {}))
 
     ms_data = data.get("mouth_shape", {})
+    default_mouth_params = [
+        "mouth_openness",
+        "mouth_width",
+        "jaw_displacement",
+        "lip_compression",
+    ]
     mouth_shape = MouthShapeConfig(
         enabled=ms_data.get("enabled", False),
-        parameters=ms_data.get("parameters", MouthShapeConfig.parameters),
+        parameters=ms_data.get("parameters", default_mouth_params),
         num_outputs=ms_data.get("num_outputs", 4),
         video_fps=ms_data.get("video_fps", 30.0),
         interpolation=ms_data.get("interpolation", "linear"),

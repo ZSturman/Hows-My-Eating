@@ -21,6 +21,8 @@ These tasks were completed in the comprehensive refactor:
 - [x] **Runtime config UI** - `ConfigurationView.swift` with sliders and JSON export
 - [x] **Future stage scaffolds** - Python scaffolds + DESIGN.md for all future stages
 - [x] **Documentation** - Updated READMEs for 02-DataPipeline, 04-RealWorldTesting
+- [x] **Field-test loop** - App session bundles, feedback import, CLI evaluate, local registry
+- [x] **Canonical app target** - Xcode project/scheme points at modular `ChewSenseDebuggingModel`
 
 ---
 
@@ -30,29 +32,32 @@ These tasks were completed in the comprehensive refactor:
 **Purpose**: Validate the refactored pipeline works correctly
 
 **Steps**:
-1. Run `python main_new.py sample` to test with sample data
+1. Run `python main_new.py sample --no-wandb` to test with sample data
 2. Verify model trains successfully
-3. Run `python main_new.py deploy` to copy to Xcode project
-4. Build and run iOS app
-5. Verify real-time detection works
+3. Run `python main_new.py evaluate --model models/chewnet.pth`
+4. Run `python main_new.py deploy --force` to copy to Xcode project
+5. Build and run iOS app
+6. Verify real-time detection works
 
 **Estimated Effort**: 1-2 hours
 
 ---
 
-### 2. Add Sample Data Files
-**Purpose**: Enable `main_new.py sample` to work out-of-the-box
+### 2. Real-World Field-Test Pass
+**Purpose**: Capture false positives and missed chewing from the deployed model
 
 **Steps**:
-1. Copy representative eating/not-eating CSVs to `data/sample/`
-2. Update `data/sample/README.md` with file descriptions
-3. Test `main_new.py sample` works
+1. Run the canonical `ChewSenseDebuggingModel` app on iPhone with AirPods
+2. Complete the scenarios in `docs/REAL_WORLD_TEST_PROTOCOL.md`
+3. Export the session bundle
+4. Place it under `02-DataPipeline/data/user/field_tests/`
+5. Run `python main_new.py from-field-test --input data/user/field_tests`
 
-**Estimated Effort**: 30 minutes
+**Estimated Effort**: 1-2 hours
 
 ---
 
-### 3. Enable Mac Catalyst in Xcode
+### 3. Enable/Verify Mac Catalyst in Xcode
 **Purpose**: Allow running on macOS
 
 **Steps**:
@@ -66,31 +71,20 @@ See [MACOS_SETUP.md](04-RealWorldTesting/ChewSense-RealTime/MACOS_SETUP.md) for 
 
 ---
 
-### 4. Add New Swift Files to Xcode Project
-**Purpose**: New modular files need to be added to Xcode target
+## 🟡 Medium Priority
 
-**Files to add**:
-- `Features/FeatureExtractor.swift`
-- `Features/FrequencyFeatures.swift`
-- `Features/TimeFeatures.swift`
-- `Managers/ChewDetector.swift`
-- `Managers/MotionManager.swift`
-- `Models/ChewModel.swift`
-- `Views/MainContentView.swift`
-- `Views/ConfigurationView.swift`
-- `Generated/NormalizationConstants.swift`
+### 4. Add Unit Tests for Field-Test Import
+**Location**: `02-DataPipeline/tests/`
 
-**Steps**:
-1. Open Xcode project
-2. Drag folders into project navigator
-3. Ensure all files are added to main target
-4. Build and fix any compilation errors
+**Tests needed**:
+- Import a fixture bundle with `motion.csv`, `predictions.csv`, and `feedback.csv`
+- Verify false positives become `label=false`
+- Verify missed chews become `label=true`
+- Verify empty/malformed bundles are skipped with manifest notes
 
-**Estimated Effort**: 30-60 minutes
+**Estimated Effort**: 2-3 hours
 
 ---
-
-## 🟡 Medium Priority
 
 ### 5. Implement Chew Count Estimation
 **Location**: `Features/FrequencyFeatures.swift`, `05-FutureStages/02-BiteSegmentation/bite_detector.py`
@@ -114,6 +108,8 @@ See [MACOS_SETUP.md](04-RealWorldTesting/ChewSense-RealTime/MACOS_SETUP.md) for 
 - `test_transform.py` - Soft label generation
 - `test_features.py` - Feature extraction accuracy
 - `test_export.py` - CoreML export, Swift constants
+- `test_splits.py` - Locked validation/test preservation
+- `test_registry.py` - Registry metadata and artifact creation
 
 **Estimated Effort**: 4-6 hours
 
@@ -177,12 +173,12 @@ See `05-FutureStages/` for planned hierarchical analysis capabilities:
 ## 📋 Session Planning
 
 ### Next Session (~2 hours)
-- Task #4: Add Swift files to Xcode project
 - Task #1: Run end-to-end pipeline test
-- Task #2: Add sample data files
+- Task #2: Complete one real-world field-test pass on device
+- Task #3: Verify Mac Catalyst build/run
 
 ### Following Session (~4 hours)
-- Task #3: Enable Mac Catalyst
+- Task #4: Add field-test import unit tests
 - Task #6: Add unit tests for pipeline
 - Fix any issues from end-to-end testing
 

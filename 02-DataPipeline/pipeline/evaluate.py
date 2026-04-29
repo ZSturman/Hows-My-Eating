@@ -15,6 +15,7 @@ import torch
 
 from .config import PipelineConfig
 from .train import ChewNet
+from .splits import indices_for_split
 
 try:
     from sklearn.metrics import (
@@ -37,6 +38,8 @@ def evaluate_model(
     features_dir: Path,
     model_path: Path,
     config: PipelineConfig,
+    split_manifest_path: Path | None = None,
+    split_name: str = "all",
 ) -> dict[str, Any]:
     """
     Evaluate trained model on feature data.
@@ -78,6 +81,14 @@ def evaluate_model(
     # Load data
     X = np.load(features_dir / "X.npy").astype(np.float32)
     y = np.load(features_dir / "y.npy").astype(np.float32)
+
+    split_indices = indices_for_split(features_dir, split_manifest_path, split_name)
+    if split_indices is not None:
+        if len(split_indices) == 0:
+            raise ValueError(f"Split '{split_name}' has no feature rows")
+        X = X[split_indices]
+        y = y[split_indices]
+        print(f"Evaluating split '{split_name}' ({len(split_indices)} rows)")
     
     # Normalize and predict
     X_norm = (X - mean) / std
@@ -87,9 +98,12 @@ def evaluate_model(
         output = model(X_t).numpy()
     
     if mode == "mouth_shape" and num_outputs > 1:
-        return _evaluate_regression(y, output, ckpt)
+        metrics = _evaluate_regression(y, output, ckpt)
     else:
-        return _evaluate_binary(y, output, config)
+        metrics = _evaluate_binary(y, output, config)
+    metrics["split"] = split_name
+    metrics["split_manifest_path"] = str(split_manifest_path) if split_manifest_path else None
+    return metrics
 
 
 def _evaluate_binary(

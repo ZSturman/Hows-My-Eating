@@ -26,6 +26,7 @@ import pandas as pd
 from scipy.signal import welch
 
 from .config import FeaturesConfig, MouthShapeConfig
+from .splits import session_id_from_path
 
 
 FEATURE_NAMES = [
@@ -256,7 +257,7 @@ def extract_features_from_csv(
     X_list = []
     y_list = []
     
-    for start in range(0, len(df) - window_samples, step_samples):
+    for start in range(0, len(df) - window_samples + 1, step_samples):
         end = start + window_samples
         window = df.iloc[start:end]
         
@@ -303,6 +304,7 @@ def extract_features_directory(
     
     X_all = []
     y_all = []
+    session_ids_all: list[str] = []
     
     csv_files = sorted(input_dir.glob("*.csv"))
     
@@ -322,6 +324,8 @@ def extract_features_directory(
             )
             X_all.append(X)
             y_all.append(y)
+            session_id = session_id_from_path(csv_path)
+            session_ids_all.extend([session_id] * len(X))
         except Exception as e:
             print(f"  Error: {e}")
     
@@ -335,9 +339,11 @@ def extract_features_directory(
     x_path = output_dir / "X.npy"
     y_path = output_dir / "y.npy"
     names_path = output_dir / "feature_names.txt"
+    session_ids_path = output_dir / "session_ids.npy"
     
     np.save(x_path, X)
     np.save(y_path, y)
+    np.save(session_ids_path, np.array(session_ids_all, dtype=object))
     
     with open(names_path, "w") as f:
         for name in FEATURE_NAMES:
@@ -346,6 +352,7 @@ def extract_features_directory(
     print(f"✅ Feature extraction complete")
     print(f"   X shape: {X.shape}")
     print(f"   y shape: {y.shape}")
+    print(f"   Sessions: {len(set(session_ids_all))}")
     print(f"   Output: {output_dir}")
     
     # Save label names for multi-output mode

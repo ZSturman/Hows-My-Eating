@@ -4,10 +4,11 @@ This stage contains the iOS/macOS app for real-time chewing detection using AirP
 
 ## Overview
 
-The **ChewSenseDebuggingModel** app runs the trained ChewNet model in real-time on your device, providing:
+The canonical **ChewSenseDebuggingModel** app runs the trained ChewNet model in real-time on your device, providing:
 - Live chewing probability display
 - Temporal state machine (idle/chewing detection)
-- Log export for analysis
+- Field-test session bundle export for analysis and retraining
+- False-positive, missed-chew, and correct feedback capture
 - Runtime configuration tuning
 
 ## Project Structure
@@ -119,6 +120,23 @@ python main_new.py deploy
 This copies:
 - `ChewNet.mlpackage` → `ChewSense-RealTime/`
 - Generated `NormalizationConstants.swift` → `Generated/`
+
+## Field-Test Session Bundles
+
+Each app test run creates a session folder containing:
+
+- `session_metadata.json` - model id, dataset hash, W&B metadata when available, platform, app version, runtime config, and scenario
+- `motion.csv` - raw AirPods motion samples
+- `predictions.csv` - per-window probability, smoothed state, and raw feature vector
+- `feedback.csv` - false positives, missed chews, and correct confirmations
+- `config.json` - exported runtime settings when available
+
+Import exported bundles into the training loop:
+
+```bash
+cd ../02-DataPipeline
+python main_new.py from-field-test --input data/user/field_tests
+```
 
 ## macOS Support
 
