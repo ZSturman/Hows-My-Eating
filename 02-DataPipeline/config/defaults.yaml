@@ -22,6 +22,30 @@ training:
   val_ratio: 0.2
   hidden_dim: 32
   patience: 5
+  # ---- Imbalance handling ----
+  # loss: "bce" (BCEWithLogitsLoss with pos_weight) or "focal"
+  loss: "bce"
+  # pos_weight: "auto" sets pos_weight = n_neg/n_pos. Use "none" to disable, or a float.
+  pos_weight: "auto"
+  # WeightedRandomSampler ensures each minibatch is class-balanced.
+  use_weighted_sampler: true
+  focal_alpha: 0.25
+  focal_gamma: 2.0
+  # ---- Architecture ----
+  # arch: "mlp" (default 12-feature 3-layer MLP) or "cnn" (1D-CNN over raw windows; future)
+  arch: "mlp"
+  # ---- Split policy ----
+  # If true, allow training without a locked split manifest (session-aware random fallback).
+  allow_unsplit: false
+  # ---- Augmentation ----
+  # Cheap noise added to the 12-d feature vector during training (set 0 to disable).
+  feature_noise_std: 0.02
+  augmentation:
+    enabled: false
+    noise_std: 0.01
+    rotation_deg: 8.0
+    time_shift_frac: 0.05
+    channel_dropout_p: 0.0
 
 # =============================================================================
 # FEATURE EXTRACTION PARAMETERS

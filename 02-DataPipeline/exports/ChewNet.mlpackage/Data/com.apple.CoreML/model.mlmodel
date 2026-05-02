@@ -1,15 +1,13 @@
-‹
+Ð
 
 input
 *
  €R
 logit	*
- €¢Þ¢:
-+com.github.apple.coremltools.source_dialectTorchScript¢3
-#com.github.apple.coremltools.sourcetorch==2.9.1¢:
-,com.github.apple.coremltools.conversion_date
-2025-12-12¢+
-$com.github.apple.coremltools.version9.0²Ýð
+ €¢£¢3
+#com.github.apple.coremltools.sourcetorch==2.7.1¢:
++com.github.apple.coremltools.source_dialectTorchScript¢-
+$com.github.apple.coremltools.version8.3.0²ßð
 mainç
 
 input
@@ -206,7 +204,7 @@ $com.github.apple.coremltools.version9.0²Ýð
 
 
 :
-êº
+¿¨º
 linear"
 weight
 
@@ -285,19 +283,19 @@ $com.github.apple.coremltools.version9.0²Ýð
 
 
 "
-cast_0"å
-	buildInfo×"
+cast_0"ç
+	buildInfoÙ"
 
 
-Ä"Á
-6
+Æ"Ã
+8
 !
 
 "
-coremltools-version
-	
-"
-9.0
+coremltools-version
+
+	"
+8.3.0
 @
 )
 !
@@ -305,7 +303,7 @@ $com.github.apple.coremltools.version9.0²Ýð
 coremltools-component-torch
 
 	"
-2.9.1
+2.7.1
 E
 (
  

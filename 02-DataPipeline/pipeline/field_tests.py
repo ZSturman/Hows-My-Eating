@@ -116,8 +116,15 @@ def import_field_test_bundles(
     output_dir: Path,
     manifest_dir: Path,
     padding_sec: float = 0.75,
+    activity: str | None = None,
 ) -> dict[str, Any]:
-    """Convert app feedback windows into labeled session folders."""
+    """Convert app feedback windows into labeled session folders.
+
+    Args:
+        activity: Optional activity tag (e.g. "head_shake", "walking", "eating")
+            stamped into each imported session's _metadata.txt and the manifest.
+            Used by the per-activity comparator and balance gate.
+    """
     input_dir = Path(input_dir)
     output_dir = Path(output_dir)
     manifest_dir = Path(manifest_dir)
@@ -171,6 +178,7 @@ def import_field_test_bundles(
                 "rows": int(len(reviewed)),
                 "label_mean": float(reviewed["label"].mean()),
                 "imported_at": datetime.now(timezone.utc).isoformat(),
+                "activity": activity or metadata.get("activity"),
             }
             with open(session_dir / "_metadata.txt", "w") as f:
                 f.write(json.dumps(event_metadata, indent=2))
@@ -246,6 +254,7 @@ def import_field_test_bundles(
                 "window_end": end,
                 "corrected_label": bool(truth),
                 "imported_at": datetime.now(timezone.utc).isoformat(),
+                "activity": activity or metadata.get("activity"),
             }
             with open(session_dir / "_metadata.txt", "w") as f:
                 f.write(json.dumps(event_metadata, indent=2))
@@ -266,6 +275,7 @@ def import_field_test_bundles(
         "output_dir": str(output_dir),
         "bundles_found": len(bundles),
         "imported_count": len(imported),
+        "activity": activity,
         "skipped": skipped,
         "imported_sessions": [
             {
@@ -285,3 +295,87 @@ def import_field_test_bundles(
         json.dump(manifest, f, indent=2)
     manifest["manifest_path"] = str(manifest_path)
     return manifest
+
+
+def session_activity_map(curated_dir: Path) -> dict[str, str]:
+    """Return {session_id: activity} for all curated sessions that have an `activity` tag.
+
+    Sessions without an activity tag are inferred from the session_id prefix:
+      Eating-* -> "eating", Not-eating-* -> "not_eating".
+    """
+    curated_dir = Path(curated_dir)
+    out: dict[str, str] = {}
+    if not curated_dir.exists():
+        return out
+    for session_dir in sorted(curated_dir.iterdir()):
+        if not session_dir.is_dir():
+            continue
+        meta_path = session_dir / "_metadata.txt"
+        sid = session_dir.name
+        activity: str | None = None
+        if meta_path.exists():
+            try:
+                with open(meta_path, "r") as f:
+                    meta = json.load(f)
+                activity = meta.get("activity")
+                if not activity:
+                    src = meta.get("source_metadata") or {}
+                    activity = src.get("activity") if isinstance(src, dict) else None
+            except (json.JSONDecodeError, OSError):
+                pass
+        if not activity:
+            lower = sid.lower()
+            if lower.startswith("eating") or lower.startswith("eating-"):
+                activity = "eating"
+            elif lower.startswith("not-eating") or lower.startswith("noteating"):
+                activity = "not_eating"
+        if activity:
+            out[sid] = activity
+    return out
+
+
+def balance_summary(curated_dir: Path) -> dict[str, Any]:
+    """Summarize positive/negative balance and per-activity counts across curated sessions."""
+    import pandas as pd  # local import to avoid global cost when unused
+    curated_dir = Path(curated_dir)
+    activity_map = session_activity_map(curated_dir)
+    per_activity: dict[str, dict[str, int]] = {}
+    total_pos = 0
+    total_neg = 0
+    n_sessions = 0
+    if not curated_dir.exists():
+        return {"sessions": 0, "positive_rows": 0, "negative_rows": 0, "per_activity": {}}
+    for session_dir in sorted(curated_dir.iterdir()):
+        if not session_dir.is_dir():
+            continue
+        csvs = list(session_dir.glob("*.csv"))
+        if not csvs:
+            continue
+        n_sessions += 1
+        try:
+            df = pd.read_csv(csvs[0])
+        except Exception:
+            continue
+        if "label" not in df.columns:
+            continue
+        labels = df["label"]
+        try:
+            pos = int((labels.astype(float) >= 0.5).sum())
+        except Exception:
+            pos = int(labels.astype(str).str.lower().isin({"true", "1", "chewing", "chew"}).sum())
+        neg = int(len(labels) - pos)
+        total_pos += pos
+        total_neg += neg
+        activity = activity_map.get(session_dir.name, "unknown")
+        bucket = per_activity.setdefault(activity, {"sessions": 0, "pos": 0, "neg": 0})
+        bucket["sessions"] += 1
+        bucket["pos"] += pos
+        bucket["neg"] += neg
+    total_rows = total_pos + total_neg
+    return {
+        "sessions": n_sessions,
+        "positive_rows": total_pos,
+        "negative_rows": total_neg,
+        "positive_pct": (100.0 * total_pos / total_rows) if total_rows > 0 else 0.0,
+        "per_activity": per_activity,
+    }

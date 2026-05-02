@@ -15,6 +15,16 @@ import yaml
 
 
 @dataclass
+class AugmentationConfig:
+    """Per-axis raw-window augmentation (only used when input_mode includes raw)."""
+    enabled: bool = False
+    noise_std: float = 0.01      # Gaussian noise std (in g / rad/s)
+    rotation_deg: float = 8.0    # max random rotation around random axis
+    time_shift_frac: float = 0.05  # max fraction of window to shift
+    channel_dropout_p: float = 0.0  # probability of zeroing one channel
+
+
+@dataclass
 class TrainingConfig:
     batch_size: int = 256
     lr: float = 0.001
@@ -22,6 +32,20 @@ class TrainingConfig:
     val_ratio: float = 0.2
     hidden_dim: int = 32
     patience: int = 5
+    # Imbalance handling
+    loss: str = "bce"            # "bce" | "focal"
+    pos_weight: str = "auto"     # "auto" (n_neg/n_pos), "none", or float string e.g. "2.5"
+    use_weighted_sampler: bool = True
+    focal_alpha: float = 0.25
+    focal_gamma: float = 2.0
+    # Architecture
+    arch: str = "mlp"            # "mlp" | "cnn"
+    # Split policy
+    allow_unsplit: bool = False  # If True, fall back to session-aware random split
+    # Feature-level augmentation (cheap noise on the 12-dim vector)
+    feature_noise_std: float = 0.0
+    # Raw-window augmentation (only if features include raw windows; future phase)
+    augmentation: AugmentationConfig = field(default_factory=AugmentationConfig)
 
 
 @dataclass
@@ -99,6 +123,21 @@ class PipelineConfig:
                 "val_ratio": self.training.val_ratio,
                 "hidden_dim": self.training.hidden_dim,
                 "patience": self.training.patience,
+                "loss": self.training.loss,
+                "pos_weight": self.training.pos_weight,
+                "use_weighted_sampler": self.training.use_weighted_sampler,
+                "focal_alpha": self.training.focal_alpha,
+                "focal_gamma": self.training.focal_gamma,
+                "arch": self.training.arch,
+                "allow_unsplit": self.training.allow_unsplit,
+                "feature_noise_std": self.training.feature_noise_std,
+                "augmentation": {
+                    "enabled": self.training.augmentation.enabled,
+                    "noise_std": self.training.augmentation.noise_std,
+                    "rotation_deg": self.training.augmentation.rotation_deg,
+                    "time_shift_frac": self.training.augmentation.time_shift_frac,
+                    "channel_dropout_p": self.training.augmentation.channel_dropout_p,
+                },
             },
             "features": {
                 "window_sec": self.features.window_sec,
@@ -157,7 +196,10 @@ def load_config(config_path: Optional[Path] = None) -> PipelineConfig:
         data = yaml.safe_load(f) or {}
     
     # Build config from YAML
-    training = TrainingConfig(**data.get("training", {}))
+    training = TrainingConfig(**{k: v for k, v in data.get("training", {}).items() if k != "augmentation"})
+    aug_data = data.get("training", {}).get("augmentation", {})
+    if aug_data:
+        training.augmentation = AugmentationConfig(**aug_data)
     features = FeaturesConfig(**data.get("features", {}))
     soft_labels = SoftLabelsConfig(**data.get("soft_labels", {}))
     evaluation = EvaluationConfig(**data.get("evaluation", {}))
@@ -215,6 +257,18 @@ def merge_cli_args(config: PipelineConfig, args: dict[str, Any]) -> PipelineConf
         config.training.hidden_dim = args["hidden_dim"]
     if "patience" in args and args["patience"] is not None:
         config.training.patience = args["patience"]
+    if "loss" in args and args["loss"] is not None:
+        config.training.loss = args["loss"]
+    if "pos_weight" in args and args["pos_weight"] is not None:
+        config.training.pos_weight = str(args["pos_weight"])
+    if "use_weighted_sampler" in args and args["use_weighted_sampler"] is not None:
+        config.training.use_weighted_sampler = bool(args["use_weighted_sampler"])
+    if "arch" in args and args["arch"] is not None:
+        config.training.arch = args["arch"]
+    if "allow_unsplit" in args and args["allow_unsplit"] is not None:
+        config.training.allow_unsplit = bool(args["allow_unsplit"])
+    if "feature_noise_std" in args and args["feature_noise_std"] is not None:
+        config.training.feature_noise_std = float(args["feature_noise_std"])
     
     # Feature overrides
     if "window_sec" in args and args["window_sec"] is not None:

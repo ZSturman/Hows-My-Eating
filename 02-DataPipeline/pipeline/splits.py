@@ -57,11 +57,14 @@ def create_or_update_split_manifest(
     validation_ratio: float = 0.2,
     test_ratio: float = 0.1,
     field_regression_session_ids: Iterable[str] | None = None,
+    gold_session_ids: Iterable[str] | None = None,
 ) -> dict:
     """Create or update a locked split manifest.
 
-    Existing validation/test assignments are preserved. New sessions default to
-    train so routine field-test imports do not churn validation metrics.
+    Existing validation/test/gold assignments are preserved. New sessions
+    default to train so routine field-test imports do not churn validation
+    metrics. `gold_locked` membership is **never** auto-assigned and only
+    grows via `gold_session_ids` (which must already be present in `sessions`).
     """
     output_path = Path(output_path)
     current_ids = {session_id_from_info(s) for s in sessions}
@@ -73,7 +76,8 @@ def create_or_update_split_manifest(
         train = set(splits.get("train", [])) & current_ids
         validation = set(splits.get("validation_locked", [])) & current_ids
         test = set(splits.get("test_locked", [])) & current_ids
-        assigned = train | validation | test
+        gold = set(splits.get("gold_locked", [])) & current_ids
+        assigned = train | validation | test  # gold can overlap train deliberately
         train |= current_ids - assigned
         if current_ids and (not validation or not test) and len(current_ids) >= 3:
             ordered = _stable_order(train)
@@ -95,6 +99,7 @@ def create_or_update_split_manifest(
         test = set(ordered[:n_test])
         validation = set(ordered[n_test : n_test + n_val])
         train = set(ordered[n_test + n_val :])
+        gold = set()
         manifest = {
             "version": SPLIT_VERSION,
             "created_at": now,
@@ -104,6 +109,7 @@ def create_or_update_split_manifest(
                 "new_sessions_default": "train",
                 "validation_ratio_on_first_create": validation_ratio,
                 "test_ratio_on_first_create": test_ratio,
+                "gold_locked_assignment": "explicit_only",
             },
         }
 
@@ -113,11 +119,16 @@ def create_or_update_split_manifest(
     if field_regression_session_ids:
         field_regression |= set(field_regression_session_ids) & current_ids
 
+    if gold_session_ids:
+        # Gold is monotonically additive — never reassigned away.
+        gold |= set(gold_session_ids) & current_ids
+
     manifest["splits"] = {
         "train": sorted(train),
         "validation_locked": sorted(validation),
         "test_locked": sorted(test),
         "field_regression": sorted(field_regression),
+        "gold_locked": sorted(gold),
     }
     save_split_manifest(manifest, output_path)
     return manifest

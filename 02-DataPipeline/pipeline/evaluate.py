@@ -40,6 +40,7 @@ def evaluate_model(
     config: PipelineConfig,
     split_manifest_path: Path | None = None,
     split_name: str = "all",
+    curated_dir: Path | None = None,
 ) -> dict[str, Any]:
     """
     Evaluate trained model on feature data.
@@ -82,12 +83,19 @@ def evaluate_model(
     X = np.load(features_dir / "X.npy").astype(np.float32)
     y = np.load(features_dir / "y.npy").astype(np.float32)
 
+    session_ids_arr = None
+    sid_path = features_dir / "session_ids.npy"
+    if sid_path.exists():
+        session_ids_arr = np.load(sid_path, allow_pickle=True)
+
     split_indices = indices_for_split(features_dir, split_manifest_path, split_name)
     if split_indices is not None:
         if len(split_indices) == 0:
             raise ValueError(f"Split '{split_name}' has no feature rows")
         X = X[split_indices]
         y = y[split_indices]
+        if session_ids_arr is not None:
+            session_ids_arr = session_ids_arr[split_indices]
         print(f"Evaluating split '{split_name}' ({len(split_indices)} rows)")
     
     # Normalize and predict
@@ -103,6 +111,32 @@ def evaluate_model(
         metrics = _evaluate_binary(y, output, config)
     metrics["split"] = split_name
     metrics["split_manifest_path"] = str(split_manifest_path) if split_manifest_path else None
+
+    # Per-activity breakdown — only when we have session_ids and a curated dir
+    if (
+        mode != "mouth_shape"
+        and session_ids_arr is not None
+        and curated_dir is not None
+    ):
+        try:
+            from .field_tests import session_activity_map
+            activity_map = session_activity_map(Path(curated_dir))
+            if activity_map:
+                per_act: dict[str, dict[str, Any]] = {}
+                for activity in sorted(set(activity_map.values())):
+                    mask = np.array([
+                        activity_map.get(str(sid)) == activity for sid in session_ids_arr
+                    ], dtype=bool)
+                    if not mask.any():
+                        continue
+                    sub_metrics = _evaluate_binary(y[mask], output[mask], config)
+                    sub_metrics.pop("confusion_matrix", None)
+                    per_act[activity] = sub_metrics
+                if per_act:
+                    metrics["per_activity"] = per_act
+        except Exception as exc:  # pragma: no cover - diagnostic only
+            metrics["per_activity_error"] = str(exc)
+
     return metrics
 
 

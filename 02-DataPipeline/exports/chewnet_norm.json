@@ -1,31 +1,61 @@
 {
-  "input_dim": 12,
-  "mean": [
-    0.0487392358481884,
-    0.0013371038949117064,
-    0.054871924221515656,
-    0.39361074566841125,
-    0.4668533205986023,
-    0.012962675653398037,
+  "model_id": "chewnet-20260502-141012-a5754bb8",
+  "feature_mean": [
+    0.02321704477071762,
+    0.00027526376652531326,
+    0.027778543531894684,
+    0.1965329498052597,
+    0.22558178007602692,
+    0.012828925624489784,
     0.0,
-    0.0003582321514841169,
+    4.9527523515280336e-05,
     0.0,
     0.0,
-    4.997451305389404,
-    8.736513137817383
+    6.491515159606934,
+    12.121706008911133
   ],
-  "std": [
-    0.05903511121869087,
-    0.004085940308868885,
-    0.06470552831888199,
-    0.4862076938152313,
-    0.5923627018928528,
-    0.013633020222187042,
+  "feature_std": [
+    0.010902035981416702,
+    0.0003145920636598021,
+    0.012708364985883236,
+    0.13224022090435028,
+    0.14888526499271393,
+    0.008416639640927315,
     1.0,
-    0.0014455115888267756,
+    7.184475543908775e-05,
     1.0,
     1.0,
-    2.540461301803589,
-    5.1088175773620605
-  ]
+    2.5996997356414795,
+    5.4895710945129395
+  ],
+  "feature_names": [
+    "mean_accel_mag",
+    "var_accel_mag",
+    "rms_accel_mag",
+    "mean_gyro_mag",
+    "rms_gyro_mag",
+    "rms_jerk",
+    "zcr_accel_mag",
+    "chew_bandpower_1_3hz",
+    "bandpower_0_8_1_5hz",
+    "bandpower_2_4hz",
+    "spectral_centroid",
+    "spectral_rolloff_0_85"
+  ],
+  "input_dim": 12,
+  "hidden_dim": 32,
+  "num_outputs": 1,
+  "mode": "binary",
+  "wandb_run_id": "ti7kgwjw",
+  "wandb_run_url": "https://wandb.ai/zacharysturman-zacharysturman/chewsense/runs/ti7kgwjw",
+  "dataset_hash": "a5754bb8f409bb50",
+  "runtime_config": {
+    "alpha": 0.4,
+    "high_threshold": 0.6,
+    "low_threshold": 0.4,
+    "min_start_windows": 3,
+    "min_end_windows": 2
+  },
+  "model_package_sha256": "45f7c8b08c518640ab1d46ce34a44205a0042bf31107cafb980f7c7a69fe997c",
+  "dataset_status": "registry dataset_manifest available"
 }
