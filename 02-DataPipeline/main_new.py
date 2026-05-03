@@ -841,6 +841,23 @@ def cmd_from_field_test(args: argparse.Namespace) -> int:
     if import_manifest.get("activity"):
         print(f"   Activity tag: {import_manifest['activity']}")
 
+    # Surface gold-lock candidates the user flagged inside the recording app.
+    # We DO NOT auto-promote these into gold_locked — that remains an explicit
+    # operator decision per `pipeline/splits.py::gold_locked_assignment`. We
+    # only print the exact `--gold-locked` invocation needed to lock them.
+    gold_candidates = [
+        item["session_id"]
+        for item in import_manifest.get("imported_sessions", [])
+        if item.get("gold_lock_candidate")
+    ]
+    if gold_candidates:
+        print("\n🔒 Gold-lock candidates flagged in app:")
+        for sid in gold_candidates:
+            print(f"     - {sid}")
+        flags = " ".join(f"--gold-locked {sid}" for sid in gold_candidates)
+        print("\n   To promote them into the locked validation set, rerun with:")
+        print(f"     python main_new.py from-field-test {flags}")
+
     if import_manifest["imported_count"] == 0:
         print("\nNo usable field-test windows were imported.")
         return 0

@@ -25,6 +25,8 @@ class ImportedFieldSession:
     corrected_state: str
     rows: int
     source_bundle: Path
+    gold_lock_candidate: bool = False
+    activity: str | None = None
 
 
 def _safe_slug(value: str) -> str:
@@ -179,6 +181,7 @@ def import_field_test_bundles(
                 "label_mean": float(reviewed["label"].mean()),
                 "imported_at": datetime.now(timezone.utc).isoformat(),
                 "activity": activity or metadata.get("activity"),
+                "gold_lock_candidate": bool(metadata.get("gold_lock_candidate", False)),
             }
             with open(session_dir / "_metadata.txt", "w") as f:
                 f.write(json.dumps(event_metadata, indent=2))
@@ -191,6 +194,8 @@ def import_field_test_bundles(
                 corrected_state="mixed",
                 rows=len(reviewed),
                 source_bundle=bundle,
+                gold_lock_candidate=bool(metadata.get("gold_lock_candidate", False)),
+                activity=activity or metadata.get("activity"),
             ))
             continue
 
@@ -255,6 +260,7 @@ def import_field_test_bundles(
                 "corrected_label": bool(truth),
                 "imported_at": datetime.now(timezone.utc).isoformat(),
                 "activity": activity or metadata.get("activity"),
+                "gold_lock_candidate": bool(metadata.get("gold_lock_candidate", False)),
             }
             with open(session_dir / "_metadata.txt", "w") as f:
                 f.write(json.dumps(event_metadata, indent=2))
@@ -267,6 +273,8 @@ def import_field_test_bundles(
                 corrected_state="chewing" if truth else "idle",
                 rows=len(window),
                 source_bundle=bundle,
+                gold_lock_candidate=bool(metadata.get("gold_lock_candidate", False)),
+                activity=activity or metadata.get("activity"),
             ))
 
     manifest = {
@@ -285,6 +293,8 @@ def import_field_test_bundles(
                 "corrected_state": item.corrected_state,
                 "rows": item.rows,
                 "source_bundle": str(item.source_bundle),
+                "gold_lock_candidate": item.gold_lock_candidate,
+                "activity": item.activity,
             }
             for item in imported
         ],
